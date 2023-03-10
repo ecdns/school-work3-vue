@@ -4,9 +4,30 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: 'settings', component:() => import('pages/SettingsPage.vue') },
-      { path: 'messages', component:() => import('pages/MyMessages.vue') }
+      {
+        path: '',
+        component: () => import('pages/IndexPage.vue')
+      },
+      {
+        path: 'projects',
+        component: () => import('pages/Projects.vue')
+      },
+      {
+        path: 'chat',
+        component: () => import('pages/Chat.vue')
+      },
+      {
+        path: 'products',
+        component: () => import('pages/Products.vue')
+      },
+      {
+        path: 'customers',
+        component: () => import('pages/Customers.vue')
+      },      
+      {
+        path: 'admin',
+        component: () => import('pages/Projects.vue')
+      },
     ]
   },
 
