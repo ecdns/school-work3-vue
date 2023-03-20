@@ -1,9 +1,7 @@
 <template>
-    <q-page>
-        <q-list>
-            <ProjectCard v-for="(project, id) in projects" :project="project" v-bind:key="id" />
-        </q-list>
-    </q-page>
+    <q-list>
+        <ProjectCard v-for="(project, id) in projects" :project="project" v-bind:key="id" />
+    </q-list>
 </template>
 
 <script>

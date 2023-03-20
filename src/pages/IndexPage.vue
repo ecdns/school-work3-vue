@@ -1,10 +1,20 @@
 <template>
-  <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    >
-  </q-page>
+  <q-layout view="lHh Lpr lFf">
+    <q-page-container>
+      <BarChart />
+      <DoughnutChart />
+    </q-page-container>
+  </q-layout>
 </template>
 
+<script>
+import BarChart from 'src/components/BarChart.vue';
+import DoughnutChart from 'src/components/DoughnutChart.vue';
+
+export default {
+  components: {
+    BarChart,
+    DoughnutChart
+  }
+}
+</script>

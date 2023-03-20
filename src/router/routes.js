@@ -26,16 +26,13 @@ const routes = [
       },      
       {
         path: 'admin',
-        component: () => import('pages/Projects.vue')
+        component: () => import('pages/Admin.vue')
+      },
+      {
+        path: '/:catchAll(.*)*',
+        component: () => import('pages/ErrorNotFound.vue')
       },
     ]
-  },
-
-  // Always leave this as last one,
-  // but you can also remove it
-  {
-    path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue')
   },
 ]
 
