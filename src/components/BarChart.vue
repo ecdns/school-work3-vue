@@ -1,5 +1,5 @@
 <template>
-    <Bar id="my-chart-id" :options="chartOptions" :data="chartData" :style="myStyle" />
+    <Bar id="my-chart-id" :options="chartOptions" :data="chartData" :style="myStyles" />
 </template>
   
 <script>
@@ -9,8 +9,14 @@ import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, Li
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
-
     components: { Bar },
+    computed: {
+        myStyles() {
+            return {
+                height: `200px`,
+            }
+        }
+    },
     data() {
         return {
             chartData: {
@@ -18,11 +24,8 @@ export default {
                 datasets: [{ data: [40, 20, 12] }]
             },
             chartOptions: {
-                responsive: true
+                responsive: false
             },
-            myStyle: {
-                height: "300px"
-            }
         }
     }
 }

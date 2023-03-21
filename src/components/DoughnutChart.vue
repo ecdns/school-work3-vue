@@ -1,44 +1,50 @@
 <template>
-    <Doughnut :data="datasets" :options="config" />
+    <Doughnut :data="chartData" :options="config" :style="myStyles" />
 </template>
 
 <script>
 import { Doughnut } from 'vue-chartjs';
+import 'chart.js/auto';
+
+const options = {
+    responsive: false,
+    maintainAspectRatio: false,
+    animation: {
+        animateRotate: false
+    }
+}
 
 export default {
-    components: {
-        Doughnut
-    },
-    setup() {
-        const data = {
-            labels: [
-                'Red',
-                'Blue',
-                'Yellow'
-            ],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [300, 50, 100],
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
-                ],
-                hoverOffset: 4
-            }]
-        }
-        return {
-            data
+    components: { Doughnut },
+    computed: {
+        myStyles() {
+            return {
+                width: `200px`,
+                height: `200px`,
+            }
         }
     },
     data() {
         return {
-            config: {
-                type: 'doughnut',
-                data: this.data,
-            },
+            options,
+            chartData: {
+                labels: ['skill1'],
+                datasets: [
+                    {
+                        backgroundColor: ["#F6795E"],
+                        radius: "20%",
+                        height: "50px",
+                        data: [1, 2]
+                    }
+                ]
+            }
         }
-    }
+    },
+    computed: {
+        currentDataSet() {
+            return this.chartData.datasets[0].data
+        }
+    },
 }
 
 </script>
