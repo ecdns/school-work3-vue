@@ -69,32 +69,32 @@ import { ref } from 'vue';
 const linksList = [
     {
         title: 'Tableau de bord',
-        icon: 'school',
+        icon: 'dashboard',
         link: '/'
     },
     {
         title: 'Projets',
-        icon: 'thumb_up',
+        icon: 'view_list',
         link: '/projects'
     },
     {
         title: 'Chat',
-        icon: 'favorite',
+        icon: 'question_answer',
         link: '/chat'
     },
     {
         title: 'Produits / Services',
-        icon: 'favorite',
+        icon: 'receipt',
         link: '/products'
     },
     {
         title: 'Clients',
-        icon: 'favorite',
+        icon: 'contact_page',
         link: '/customers'
     },
     {
         title: 'Administration',
-        icon: 'favorite',
+        icon: 'lock_outline',
         link: '/admin'
     },
 ]

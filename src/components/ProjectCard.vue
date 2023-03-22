@@ -19,11 +19,12 @@
                 <q-separator spaced class="q-mx-lg" />
                 <div class="text-caption text-grey">{{ project.description }}</div>
             </q-card-section>
-
         </q-card-section>
     </q-card>
 </template>
+
 <script>
+
 import { useRouter } from 'vue-router';
 
 export default {
