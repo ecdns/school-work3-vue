@@ -10,7 +10,13 @@ const routes = [
       },
       {
         path: 'projects',
-        component: () => import('pages/Projects.vue')
+        component: () => import('pages/Projects.vue'),
+        children: [
+          {
+            path: ':id',
+            component: () => import('pages/projects/_id.vue')
+          }
+        ]
       },
       {
         path: 'chat',
