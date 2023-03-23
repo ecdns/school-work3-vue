@@ -5,7 +5,10 @@
                 <q-img style="height: 200px" class="rounded-borders" src="https://cdn.quasar.dev/img/parallax2.jpg" />
             </q-card-section>
             <q-card-section class="q-pt-xs">
-                <q-badge floating transparent :color="project.statut.color" :label="project.statut.name" />
+                <q-badge color="red" floating transparent>
+                    4
+                </q-badge>
+                <q-badge transparent :color="project.statut.color" :label="project.statut.name" />
                 <div class="text-h5 q-mt-sm q-mb-xs">{{ project.name }}</div>
                 <div class="text-overline">Création : {{ project.createdAt }}</div>
                 <div class="flex row">

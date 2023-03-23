@@ -28,44 +28,21 @@
                 </q-toolbar>
             </div>
             <div class="full-width row wrap justify-center items-center content-center">
-                <SlideConversation />
-                <div class="flex column q-ma-xl">
-                    <Message />
-                    <q-input class="q-mt-lg" filled bottom-slots v-model="text" label="Label" counter maxlength="12"
-                        :dense="dense">
-                        <template v-slot:before>
-                            <q-avatar>
-                                <img src="https://cdn.quasar.dev/img/avatar5.jpg">
-                            </q-avatar>
-                        </template>
-
-                        <template v-slot:append>
-                            <q-icon v-if="text !== ''" name="close" @click="text = ''" class="cursor-pointer" />
-                            <q-icon name="schedule" />
-                        </template>
-
-                        <template v-slot:hint>
-                            Field hint
-                        </template>
-
-                        <template v-slot:after>
-                            <q-btn round dense flat icon="send" />
-                        </template>
-                    </q-input>
-                </div>
+                <Contacts />
             </div>
+        </q-page-container>
+        <q-page-container>
+            <router-view />
         </q-page-container>
     </q-layout>
 </template>
 
 <script>
-import SlideConversation from 'src/components/SlideConversation.vue';
-import Message from 'src/components/Message.vue';
+import Contacts from 'src/components/Contacts.vue';
 
 export default {
     components: {
-        SlideConversation,
-        Message
+        Contacts,
     }
 }
 

@@ -13,14 +13,24 @@ const routes = [
         component: () => import('pages/Projects.vue'),
         children: [
           {
+            path: '',
+            component: () => import('pages/projects/index.vue')
+          },
+          {
             path: ':id',
-            component: () => import('pages/projects/_id.vue')
+            component: () => import('pages/projects/_id/index.vue')
           }
         ]
       },
       {
         path: 'chat',
-        component: () => import('pages/Chat.vue')
+        component: () => import('pages/Chat.vue'),
+        children: [
+          {
+            path: ':id',
+            component: () => import('components/Conversation.vue')
+          }
+        ]
       },
       {
         path: 'products',

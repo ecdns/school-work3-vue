@@ -1,0 +1,87 @@
+<template>
+    <div class="q-pa-md" style="max-width: 350px">
+
+        <q-tabs v-model="tab" class="text-teal">
+            <q-tab label="Contact" name="contact" />
+            <q-tab label="Projet" name="project" />
+        </q-tabs>
+        <q-separator />
+        <q-tab-panels v-model="tab" animated>
+            <q-tab-panel name="contact">
+                <q-list>
+                    <q-item v-for="contact in contacts" :key="contact.id" class="q-my-sm" clickable v-ripple
+                        @click="router.push(`/chat/${contact.conversation}`)">
+                        <q-item-section avatar>
+                            <q-avatar color="primary" text-color="white">
+                                {{ contact.letter }}
+                            </q-avatar>
+                        </q-item-section>
+
+                        <q-item-section>
+                            <q-item-label>{{ contact.name }}</q-item-label>
+                            <q-item-label caption lines="1">{{ contact.email }}</q-item-label>
+                        </q-item-section>
+
+                        <q-item-section side>
+                            <q-icon name="chat_bubble" color="green" />
+                        </q-item-section>
+                    </q-item>
+                </q-list>
+            </q-tab-panel>
+            <q-tab-panel name="project">
+                With so much content to display at once, and often so little screen real-estate,
+                Cards have fast become the design pattern of choice for many companies, including
+                the likes of Google and Twitter.
+            </q-tab-panel>
+        </q-tab-panels>
+    </div>
+</template>
+
+<script>
+
+import { useRouter } from 'vue-router'
+import { ref } from 'vue';
+
+
+export default {
+    setup() {
+        const contacts = [{
+            id: 1,
+            name: 'Ruddy Jedrzej',
+            email: 'rjedrzej0@discuz.net',
+            letter: 'R',
+            conversation: 1
+        }, {
+            id: 2,
+            name: 'Mallorie Alessandrini',
+            email: 'malessandrini1@marketwatch.com',
+            letter: 'M',
+            conversation: 1
+        }, {
+            id: 3,
+            name: 'Elisabetta Wicklen',
+            email: 'ewicklen2@microsoft.com',
+            letter: 'E',
+            conversation: 1
+        }, {
+            id: 4,
+            name: 'Seka Fawdrey',
+            email: 'sfawdrey3@wired.com',
+            letter: 'S',
+            conversation: 1
+        }]
+
+        const router = useRouter();
+
+        return {
+            contacts,
+            router
+        }
+    },
+    data() {
+        return {
+            tab: ref('contact')
+        }
+    }
+}
+</script>
