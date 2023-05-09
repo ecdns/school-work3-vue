@@ -4,6 +4,7 @@
             <q-card-section>
                 <div class="text-h6">Our Changing Planet</div>
                 <div class="text-subtitle2">by John Doe</div>
+                <ProjectEditDialog />
             </q-card-section>
             <q-tabs v-model="tab" dense class="bg-grey-3 text-grey-7" active-color="primary" indicator-color="purple"
                 align="justify">
@@ -46,6 +47,7 @@
 
 <script>
 
+import ProjectEditDialog from 'src/components/ProjectEditDialog.vue';
 import { ref } from 'vue'
 import { useRoute } from 'vue-router';
 
@@ -54,11 +56,12 @@ export default {
         const route = useRoute();
         const projectId = ref(route.params.id);
         return {
-            tab: ref('details'),
+            tab: ref("details"),
             route,
             projectId
-        }
-    }
+        };
+    },
+    components: { ProjectEditDialog }
 }
 
 </script>

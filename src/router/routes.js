@@ -17,6 +17,10 @@ const routes = [
             component: () => import('pages/projects/index.vue')
           },
           {
+            path: 'create',
+            component: () => import('pages/projects/create.vue')
+          },
+          {
             path: ':id',
             component: () => import('pages/projects/_id/index.vue')
           }

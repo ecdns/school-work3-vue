@@ -3,11 +3,22 @@
 </template>
 
 <script>
+import { useQuasar } from "quasar";
+import { useAuthStore } from './stores/auth';
 
-import { defineComponent } from 'vue'
+export default {
+  setup() {
+    const $q = useQuasar()
+    const authStore = useAuthStore();
 
-export default defineComponent({
-  name: 'App'
-})
+    return { authStore, $q }
+  },
+  async created() {
+    if (this.authStore.isAuthenticated) {
+      await this.authStore.loadUserData(false);
+    }
+  }
+}
+
 
 </script>
