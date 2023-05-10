@@ -1,5 +1,49 @@
+import { createRouterLayout } from "vue-router-layout";
+import { useAuthStore } from "src/stores/auth";
+
+const RouterLayout = createRouterLayout((layout) => {
+  return import(`../layouts/${layout}.vue`);
+});
+
+const ifAuthenticated = (to, from, next) => {
+  const authStore = useAuthStore();
+  if (authStore.isAuthenticated) {
+    authStore.loadUserData().then(() => {
+      next();
+    })
+    return;
+  }
+  next("/login");
+};
+
+const redirectIfAuthenticated = (to, from, next) => {
+  const authStore = useAuthStore();
+
+  if (authStore.isAuthenticated) {
+    next("/map");
+    return;
+  }
+  next();
+};
+
 
 const routes = [
+  {
+    path: "/login",
+    component: () => import(`../pages/Login.vue`),
+  },
+  {
+    path: "/register",
+    component: () => import(`../pages/Register.vue`),
+  },
+  /*{
+    path: "/send-reset-password",
+    component: () => import(`../pages/send-reset-password.vue`),
+  },
+  {
+    path: "/reset-password/:token",
+    component: () => import(`../pages/reset-password/_token.vue`),
+  },*/
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
