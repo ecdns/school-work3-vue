@@ -5,7 +5,7 @@
                 <q-icon name="search" />
             </template>
         </q-input>
-        <q-btn icon="add" color="primary" label="Nouveau projet" />
+        <q-btn icon="add" color="primary" label="Nouveau projet" @click="router.push('/projects/create')" />
     </div>
     <div class="q-ma-md">
         <q-checkbox v-model="inprogress" label="En cours" color="teal" />
@@ -20,13 +20,16 @@
 
 import ProjectList from 'src/components/ProjectList.vue';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
     components: {
         ProjectList
     },
     setup() {
+        const router = useRouter()
         return {
+            router,
             inprogress: ref(false),
             stopped: ref(false),
             ended: ref(false),
@@ -43,24 +46,29 @@ export default {
                     members: [
                         {
                             id: 1,
-                            name: "Clément"
+                            name: "Clément",
+                            avatar: "https://cdn.quasar.dev/img/avatar5.jpg"
                         },
                         {
                             id: 6,
-                            name: "Clément"
+                            name: "Clément",
+                            avatar: "https://cdn.quasar.dev/img/avatar5.jpg"
                         },
                         {
                             id: 7,
-                            name: "Clément"
+                            name: "Clément",
+                            avatar: "https://cdn.quasar.dev/img/avatar5.jpg"
                         },
                         {
                             id: 8,
-                            name: "Clément"
+                            name: "Clément",
+                            avatar: "https://cdn.quasar.dev/img/avatar5.jpg"
                         },
                     ],
                     description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic sed impedit ipsam in? Maiores quod quae, vitae voluptates similique facere tempora ipsam, fugiat magni voluptas, animi beatae voluptatibus quas. Mollitia?",
                     statut: {
-                        name: "En cours",
+                        label: "En cours",
+                        name: "inprogress",
                         color: "teal"
                     }
                 },
@@ -71,24 +79,29 @@ export default {
                     members: [
                         {
                             id: 2,
-                            name: "Macky"
+                            name: "Macky",
+                            avatar: "https://cdn.quasar.dev/img/avatar5.jpg"
                         },
                         {
                             id: 3,
-                            name: "Macky"
+                            name: "Macky",
+                            avatar: "https://cdn.quasar.dev/img/avatar5.jpg"
                         },
                         {
                             id: 4,
-                            name: "Macky"
+                            name: "Macky",
+                            avatar: "https://cdn.quasar.dev/img/avatar5.jpg"
                         },
                         {
                             id: 5,
-                            name: "Macky"
+                            name: "Macky",
+                            avatar: "https://cdn.quasar.dev/img/avatar5.jpg"
                         },
                     ],
                     description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic sed impedit ipsam in? Maiores quod quae, vitae voluptates similique facere tempora ipsam, fugiat magni voluptas, animi beatae voluptatibus quas. Mollitia?",
                     statut: {
-                        name: "Abandonné",
+                        label: "Abandonné",
+                        name: "stopped",
                         color: "red"
                     }
                 },
@@ -116,7 +129,8 @@ export default {
                     ],
                     description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic sed impedit ipsam in? Maiores quod quae, vitae voluptates similique facere tempora ipsam, fugiat magni voluptas, animi beatae voluptatibus quas. Mollitia?",
                     statut: {
-                        name: "Terminé",
+                        label: "Terminé",
+                        name: "ended",
                         color: "red"
                     }
                 },

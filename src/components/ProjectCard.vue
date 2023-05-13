@@ -8,7 +8,7 @@
                 <q-badge color="red" floating transparent>
                     4
                 </q-badge>
-                <q-badge transparent :color="project.statut.color" :label="project.statut.name" />
+                <q-badge transparent :color="project.statut.color" :label="project.statut.label" />
                 <div class="text-h5 q-mt-sm q-mb-xs">{{ project.name }}</div>
                 <div class="text-overline">Création : {{ project.createdAt }}</div>
                 <div class="flex row">

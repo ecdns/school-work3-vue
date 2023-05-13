@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100%; max-width: 400px">
+    <div style="width: 100%;">
         <q-chat-message name="me" avatar="https://cdn.quasar.dev/img/avatar3.jpg" :text="['hey, how are you?']"
             stamp="7 minutes ago" sent bg-color="amber-7" />
         <q-chat-message name="Jane" avatar="https://cdn.quasar.dev/img/avatar5.jpg" :text="[
