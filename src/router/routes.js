@@ -39,7 +39,7 @@ const routes = [
       {
         path: 'customers',
         component: () => import('pages/Customers.vue')
-      },      
+      },
       {
         path: 'admin',
         component: () => import('pages/Admin.vue')

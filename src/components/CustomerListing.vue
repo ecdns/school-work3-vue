@@ -54,7 +54,7 @@
 
 
     <div class="q-pa-md">
-      <q-table flat bordered title="Clients" :rows="rows" :columns="columns" row-key="name"
+      <q-table flat bordered title="Clients" :rows="rows" :columns="columns" row-key="email"
         :selected-rows-label="getSelectedString" selection="multiple" v-model:selected="selected" />
 
       <!-- <div class="q-mt-md">
