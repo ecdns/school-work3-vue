@@ -86,7 +86,17 @@ const routes = [
       },
       {
         path: 'customers',
-        component: () => import('pages/Customers.vue')
+        component: () => import('src/pages/Customers.vue'),
+        children: [
+          {
+            path: '',
+            component: () => import('pages/customers/index.vue')
+          },
+          {
+            path: ':id',
+            component: () => import('pages/customers/_id/index.vue')
+          }
+        ]
       },
       {
         path: 'admin',
