@@ -11,14 +11,16 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
+    "@quasar/cli": "^2.2.1",
     "@quasar/extras": "^1.0.0",
     "@vueuse/integrations": "^10.1.2",
     "axios": "^1.4.0",
     "chart.js": "^4.2.1",
+    "crypto-js": "^4.1.1",
     "date-fns": "^2.30.0",
     "moment": "^2.29.4",
     "pinia": "^2.0.36",
-    "quasar": "^2.6.0",
+    "quasar": "^2.12.0",
     "vue": "^3.0.0",
     "vue-chartjs": "^5.2.0",
     "vue-router": "^4.0.0",

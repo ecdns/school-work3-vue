@@ -13,11 +13,11 @@ export default {
 
     return { authStore, $q }
   },
-  async created() {
-    if (this.authStore.isAuthenticated) {
-      await this.authStore.loadUserData(false);
-    }
-  }
+  // async created() {
+  // if (this.authStore.isAuthenticated) {
+  //   await this.authStore.loadUserData(false);
+  // }
+  // }
 }
 
 

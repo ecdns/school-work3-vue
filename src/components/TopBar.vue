@@ -36,7 +36,7 @@
         :width="300" :breakpoint="500" bordered class="bg-grey-3">
         <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
             <q-list>
-                <q-item clickable style="width: 100%;" v-if="authStore.isAuthenticated">
+                <q-item clickable style="width: 100%;">
                     <q-item-section avatar>
                         <q-avatar size="50px">
                             <img src="https://cdn.quasar.dev/img/avatar4.jpg">
@@ -65,7 +65,6 @@
 <script>
 
 import { ref } from 'vue';
-import { useAuthStore } from '../stores/auth'
 
 const linksList = [
     {
@@ -103,7 +102,6 @@ const linksList = [
 export default {
     setup() {
         return {
-            authStore: useAuthStore(),
             essentialLinks: linksList,
             drawer: ref(false),
             miniState: ref(true)
