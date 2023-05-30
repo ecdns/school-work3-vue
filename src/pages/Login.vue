@@ -82,10 +82,9 @@ export default {
                         color: 'positive',
                         message: 'Connexion réussie'
                     })
-                }, () => {
-                    this.errored = true;
+                }).catch(() => {
                     this.error = "Identifiant ou mot de passe incorrect";
-                });
+                })
         }
     }
 }
