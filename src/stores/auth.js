@@ -33,7 +33,11 @@ export const useAuthStore = defineStore("auth", {
     loadUserData(cached = true) {
       return new Promise((resolve, reject) => {
         if (!cached || !this.me) {
-          return api.get('/user/me').then(res => {
+          return api.get('/user/me', {
+            headers: {
+              'Authorization': `Bearer ${this.token}`
+            }
+          }).then(res => {
             this.setMe(res.data);
             return resolve(this.me);
           }, (error) => {
