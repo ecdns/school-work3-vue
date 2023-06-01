@@ -4,9 +4,9 @@ import { useAuthStore } from "src/stores/auth";
 const ifAuthenticated = (to, from, next) => {
   const authStore = useAuthStore();
   if (authStore.isAuthenticated) {
-    // authStore.loadUserData().then(() => {
+    authStore.loadUserData().then(() => {
       next();
-    // })
+    })
     return;
   }
   next("/login");
@@ -21,7 +21,6 @@ const redirectIfAuthenticated = (to, from, next) => {
   }
   next();
 };
-
 
 const routes = [
   {
@@ -91,7 +90,7 @@ const routes = [
       {
         path: 'admin',
         component: () => import('pages/Admin.vue'),
-        beforeEnter: ifAuthenticated,
+        beforeEnter: ifAuthenticated
       },
       {
         path: '/:catchAll(.*)*',

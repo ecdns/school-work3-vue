@@ -2,7 +2,7 @@
     <q-header elevated>
         <q-toolbar>
             <q-toolbar-title>
-                CRM du Cube 3
+                Communica
             </q-toolbar-title>
 
             <div>
@@ -22,7 +22,8 @@
                                     <img src="https://cdn.quasar.dev/img/avatar4.jpg">
                                 </q-avatar>
 
-                                <div class="text-subtitle1 q-mt-md q-mb-xs">John Doe</div>
+                                <div class="text-subtitle1 q-mt-md q-mb-xs">{{ auth.me.firstName }} {{ auth.me.lastName }}
+                                </div>
 
                                 <q-btn color="primary" label="Logout" push size="sm" v-close-popup />
                             </div>
@@ -43,7 +44,7 @@
                         </q-avatar>
                     </q-item-section>
                     <q-item-section>
-                        <q-item-label>Antoine Dupont</q-item-label>
+                        <q-item-label>{{ auth.me.firstName }} {{ auth.me.lastName }}</q-item-label>
                     </q-item-section>
                 </q-item>
                 <q-separator black />
@@ -65,6 +66,7 @@
 <script>
 
 import { ref } from 'vue';
+import { useAuthStore } from 'src/stores/auth';
 
 const linksList = [
     {
@@ -101,6 +103,10 @@ const linksList = [
 
 export default {
     setup() {
+        const auth = useAuthStore();
+        return { auth }
+    },
+    data() {
         return {
             essentialLinks: linksList,
             drawer: ref(false),
