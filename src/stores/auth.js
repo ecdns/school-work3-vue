@@ -16,27 +16,28 @@ export const useAuthStore = defineStore("auth", {
   },
   actions: {
     login(email, password) {
-      // password = CryptoJS.AES.encrypt(password, encryptionKey).toString()
+      password = CryptoJS.AES.encrypt(password, encryptionKey).toString()
       return api.post('/user/login', { email, password })
-      .then(res => {
+        .then(res => {
           this.setToken(res.data.jwt);
-
           return this.loadUserData();
-      });
+        });
     },
     logout() {
       this.token = null;
       this.me = null;
       LocalStorage.remove('token');
+      LocalStorage.remove('refreshToken');
     },
     loadUserData(cached = true) {
       return new Promise((resolve, reject) => {
         if (!cached || !this.me) {
           return api.get('/user/me', {
             headers: {
-              'Authorization': `Bearer ${this.token}`
+              'Authorization': `Bearer ${this.getToken()}`
             }
-          }).then(res => {
+          }
+          ).then(res => {
             this.setMe(res.data);
             return resolve(this.me);
           }, (error) => {
@@ -45,7 +46,7 @@ export const useAuthStore = defineStore("auth", {
         }
         return resolve(this.me);
       });
-  
+
     },
     setToken(token) {
       this.token = token;
