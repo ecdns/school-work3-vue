@@ -12,8 +12,11 @@ export const useResource = (resource) => {
 
       return new Promise((resolve, reject) => {
         const request = useDeferredAPIRequest();
-        request.execute(`/${resource}`, {
+        request.execute(`/${resource}/all`, {
           params: query,
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
         });
         request.then(({ data, error }) => {
           if (error.value) reject(error.value);
@@ -56,7 +59,11 @@ export const useResource = (resource) => {
     get(id) {
       return new Promise((resolve, reject) => {
         const request = useDeferredAPIRequest();
-        request.execute(`/${resource}/${id}`);
+        request.execute(`/${resource}/${id}`, {
+          headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+          }
+        });
         request.then(({ data, error }) => {
           if (error.value) reject(error.value);
           resolve(data.value);
@@ -69,6 +76,9 @@ export const useResource = (resource) => {
         request.execute(`/${resource}/${id}`, {
           method: "PUT",
           data: payload,
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
         });
         request.then(({ data, error }) => {
           if (error.value) reject(error.value);
