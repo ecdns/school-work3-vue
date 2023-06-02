@@ -11,28 +11,19 @@
                                 </div>
                                 <label for="input-1">
                                     Adresse email
-                                    <q-input id="input-1" v-model="credentials.email" dense outlined trim />
+                                    <q-input filled id="input-1" v-model="credentials.email" dense outlined trim />
                                 </label>
                                 <label for="input-2">
                                     Mot de passe
-                                    <q-input id="input-2" class="input" type="password" outlined
+                                    <q-input filled id="input-2" class="input" type="password" outlined
                                         v-model="credentials.password" dense trim />
                                 </label>
 
                                 <div class="text-center">
                                     <q-btn class="btn btn-block fit q-pa-sm"
-                                        style="background-color: #ed2144; border-radius: 20px 20px" type="submit">
+                                        style="background-color: #1976d2; border-radius: 20px 20px" type="submit">
                                         <span>Se connecter</span>
                                     </q-btn>
-                                </div>
-
-                                <q-separator />
-
-                                <div class="text-center text-muted mt-1">
-                                    Pas encore de compte ?
-                                    <router-link to="/register" class="fw-bold text-body">
-                                        Inscrivez-vous ici
-                                    </router-link>
                                 </div>
                             </q-form>
                         </div>
@@ -47,15 +38,14 @@
 
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useQuasar } from 'quasar'
-import { useAuthStore } from 'stores/auth'
+import { useQuasar } from 'quasar';
+import { useAuthStore } from 'stores/auth';
 
 export default {
     setup() {
         const errored = ref(false);
         const error = ref("");
         const authStore = useAuthStore();
-
         //const rememberMe = ref(false);
         const router = useRouter();
         const route = useRoute();
@@ -65,7 +55,7 @@ export default {
             password: "",
         });
 
-        const q = useQuasar()
+        const q = useQuasar();
 
         return {
             errored, error, authStore, router, route, credentials, q
@@ -77,12 +67,13 @@ export default {
                 .login(this.credentials.email, this.credentials.password)
                 .then(() => {
                     window.location.reload();
-                    $q.notify({
-                        icon: 'done',
-                        color: 'positive',
-                        message: 'Connexion réussie'
-                    })
-                }).catch(() => {
+
+                }).catch((e) => {
+                    this.q.notify({
+                        position: "top",
+                        type: "negative",
+                        message: `Echec de connexion`,
+                    });
                     this.errored = true;
                     this.error = "Identifiant ou mot de passe incorrect";
                 })

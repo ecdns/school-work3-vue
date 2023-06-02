@@ -16,7 +16,7 @@ export const useAuthStore = defineStore("auth", {
   },
   actions: {
     login(email, password) {
-      password = CryptoJS.AES.encrypt(password, encryptionKey).toString()
+      // password = CryptoJS.AES.encrypt(password, encryptionKey).toString()
       return api.post('/user/login', { email, password })
       .then(res => {
           this.setToken(res.data.jwt);
@@ -28,7 +28,6 @@ export const useAuthStore = defineStore("auth", {
       this.token = null;
       this.me = null;
       LocalStorage.remove('token');
-      LocalStorage.remove('refreshToken');
     },
     loadUserData(cached = true) {
       return new Promise((resolve, reject) => {
