@@ -11,17 +11,16 @@
           <q-card-section>
             <div class="row flex justify-end"> <q-icon v-close-popup name="close" size="1.5rem" style="cursor:pointer" />
             </div>
+
             <q-form action="" method="post" @submit.prevent.stop="onSubmit">
               <div class="text-h6">Fredy Frozen</div>
               <q-separator color="primary" class="q-my-md" />
               <div class="row q-my-md">
-                <q-input outlined :rules="inputRules" v-model="inputTitle" name="title" label="Titre" class="col-9" />
+                <q-input outlined v-model="inputTitle" name="title" label="Titre" class="col-9" />
               </div>
               <div class="row q-gutter-xl">
-                <q-select outlined :rules="inputRules" v-model="inputType" :options="types" name="types" label="types"
-                  class="col-4" />
-                <q-select outlined :rules="inputRules" v-model="inputResponsible" :options="users" label="Responsable"
-                  class="col-4" />
+                <q-select outlined v-model="inputType" :options="types" name="types" label="types" class="col-4" />
+                <q-select outlined v-model="inputResponsible" :options="users" label="Responsable" class="col-4" />
               </div>
               <div class="date">
                 <div class="q-pa-md">
@@ -37,77 +36,55 @@
                           <q-btn label="Cancel" color="primary" flat v-close-popup />
                           <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
                         </div>
+
                       </q-date>
+
                     </q-popup-proxy>
                   </q-btn>
+
                 </div>
               </div>
               <div style="max-width: 60vw">
-                <q-input :rules="inputRules" v-model="inputDescription" filled type="textarea"
-                  placeholder="Description" />
+                <q-input v-model="inputDescription" filled type="textarea" placeholder="Description" />
               </div>
+
+
+
               <div class="flex flex-center column q-my-md">
                 <q-btn class="submit_button" outlined ripple label="Enregister" type="submit" color="primary" />
+
               </div>
             </q-form>
           </q-card-section>
         </q-card>
       </q-dialog>
     </div>
-    <!-- CREATE ACTION FORM POP UP -->
 
     <!-- ACTION LIST -->
-    <div v-if="actions.length != 0">
-      <q-card class="my-card q-ma-lg" flat bordered v-for="(action, index) in actions" :key="index">
-        <!-- delte icon  : -->
-        <div class="flex justify-end q-mx-md q-mt-xs" style="cursor:pointer"> <q-icon name="delete" size="1.5rem"
-            @click="confirm = true" />
-        </div>
-        <q-card-section horizontal>
-          <q-card-section class="q-pt-xs" @click="updateAction(index)" style="cursor:pointer">
-            <div class="text-h5 q-mt-sm q-mb-xs col-6">{{ action.type }} - {{ action.title }} </div>
+    <q-card class="my-card q-ma-lg" flat bordered v-for="(action, index) in actions" :key="index">
+      <q-card-section horizontal @click="updateAction(index)" style="cursor:pointer">
+        <q-card-section class="q-pt-xs">
 
-            <div class="flex row">
-              <q-chip>
-                <q-avatar>
-                  <img src="https://cdn.quasar.dev/img/avatar5.jpg">
-                </q-avatar>
-                {{ action.responsible }}
-              </q-chip>
-              <div class="text-overline ">{{ action.date }}</div>
-            </div>
-            <q-separator spaced class="q-mx-lg" />
-            <div class="text-caption text-grey">{{ action.description }}</div>
-          </q-card-section>
+          <!-- <q-badge transparent color="black" label="project.statut.label" /> -->
+
+          <div class="text-h5 q-mt-sm q-mb-xs col-6">{{ action.type }} - {{ action.title }} </div>
+
+
+          <div class="flex row">
+            <q-chip>
+              <q-avatar>
+                <img src="https://cdn.quasar.dev/img/avatar5.jpg">
+              </q-avatar>
+              {{ action.responsible }}
+            </q-chip>
+            <div class="text-overline ">{{ action.date }}</div>
+          </div>
+          <q-separator spaced class="q-mx-lg" />
+          <div class="text-caption text-grey">{{ action.description }}</div>
         </q-card-section>
-      </q-card>
-    </div>
-
-    <div v-else>
-      <div class=" flex flex-center">
-        <q-icon size="10rem" name="block"></q-icon>
-      </div>
-      <div class="text-h4 q-my-md" style="text-align: center">Aucune action n'est associée à ce client</div>
-    </div>
-
-
-    <!-- ACTION LIST -->
-
-    <!-- DELETE ACTION CONFIRMATION -->
-    <q-dialog v-model="confirm" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <span class="q-ml-sm">Voulez-vous vraiment supprimer cette action ?</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Annuler" color="primary" v-close-popup />
-          <q-btn flat label="OUI" color="red" @click="deleteAction(clickedActionIndex)" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-    <!-- DELETE ACTION CONFIRMATION -->
-
+      </q-card-section>
+      <!-- UPDATE ACTION POP UP -->
+    </q-card>
   </q-page>
 </template>
 
@@ -120,8 +97,7 @@ export default {
       dialogVisible: false,
       calendarVisible: false,
       clickedAction: false,
-      clickedActionIndex: 0,
-      confirm: ref(false),
+      updateIndex: 0,
 
 
 
@@ -131,9 +107,7 @@ export default {
       date: '',
       description: '',
 
-      inputRules: [
-        val => (val && val.length > 0) || "Une information est manquante"
-      ],
+
 
       proxyDate: '01-03-2023',
       types: [
@@ -178,41 +152,28 @@ export default {
 
 
     onSubmit() {
-      if (!this.clickedAction) {
-        this.actions.unshift(
-          {
-            id: 3,
-            type: this.type,
-            responsible: this.responsible,
-            title: this.title,
-            date: this.date,
-            description: this.description,
+      this.actions.unshift(
+        {
+          id: 3,
+          type: this.type,
+          responsible: this.responsible,
+          title: this.title,
+          date: this.date,
+          description: this.description,
 
 
-          })
+        },
+
         this.dialogVisible = false
-      } else {
-        this.actions[this.clickedActionIndex].type = this.actions[this.clickedActionIndex].type
-        this.actions[this.clickedActionIndex].responsible = this.actions[this.clickedActionIndex].responsible
-        this.actions[this.clickedActionIndex].title = this.actions[this.clickedActionIndex].title
-        this.actions[this.clickedActionIndex].date = this.actions[this.clickedActionIndex].date
-        this.actions[this.clickedActionIndex].description = this.actions[this.clickedActionIndex].description
-      }
-      this.dialogVisible = false
-
-
+      )
     },
 
     updateAction(index) {
       this.clickedAction = true
       this.dialogVisible = true
-      this.clickedActionIndex = index
-      // console.log(this.clickedActionIndex)
-    },
-
-    deleteAction(index) {
-      this.actions.splice(index, 1)
-    },
+      this.updateIndex = index
+      // console.log(this.updateIndex)
+    }
 
 
   },
@@ -220,11 +181,11 @@ export default {
 
     inputType: {
       get() {
-        return this.clickedAction ? this.actions[this.clickedActionIndex].type : this.type;
+        return this.clickedAction ? this.actions[this.updateIndex].type : this.type;
       },
       set(value) {
         if (this.clickedAction) {
-          this.actions[this.clickedActionIndex].type = value;
+          this.actions[this.updateIndex].type = value;
         } else {
           this.type = value;
         }
@@ -232,11 +193,11 @@ export default {
     },
     inputResponsible: {
       get() {
-        return this.clickedAction ? this.actions[this.clickedActionIndex].responsible : this.responsible;
+        return this.clickedAction ? this.actions[this.updateIndex].responsible : this.responsible;
       },
       set(value) {
         if (this.clickedAction) {
-          this.actions[this.clickedActionIndex].responsible = value;
+          this.actions[this.updateIndex].responsible = value;
         } else {
           this.responsible = value;
         }
@@ -244,11 +205,11 @@ export default {
     },
     inputTitle: {
       get() {
-        return this.clickedAction ? this.actions[this.clickedActionIndex].title : this.title;
+        return this.clickedAction ? this.actions[this.updateIndex].title : this.title;
       },
       set(value) {
         if (this.clickedAction) {
-          this.actions[this.clickedActionIndex].title = value;
+          this.actions[this.updateIndex].title = value;
         } else {
           this.title = value;
         }
@@ -256,11 +217,11 @@ export default {
     },
     inputDate: {
       get() {
-        return this.clickedAction ? this.actions[this.clickedActionIndex].date : this.date;
+        return this.clickedAction ? this.actions[this.updateIndex].date : this.date;
       },
       set(value) {
         if (this.clickedAction) {
-          this.actions[this.clickedActionIndex].date = value;
+          this.actions[this.updateIndex].date = value;
         } else {
           this.date = value;
         }
@@ -268,11 +229,11 @@ export default {
     },
     inputDescription: {
       get() {
-        return this.clickedAction ? this.actions[this.clickedActionIndex].description : this.description;
+        return this.clickedAction ? this.actions[this.updateIndex].description : this.description;
       },
       set(value) {
         if (this.clickedAction) {
-          this.actions[this.clickedActionIndex].description = value;
+          this.actions[this.updateIndex].description = value;
         } else {
           this.description = value;
         }

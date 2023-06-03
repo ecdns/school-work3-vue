@@ -82,7 +82,24 @@ const routes = [
       },
       {
         path: 'products',
-        component: () => import('pages/Products.vue')
+        component: () => import('src/pages/Products.vue'),
+
+        children: [
+          {
+            path:'',
+            component: () => import('src/pages/products/index.vue'),
+          },
+          {
+            path:':id',
+            component: () => import('pages/products/_id/index.vue'),
+            props: route => ({
+              id: route.params.id,
+              name: route.params.name,
+              reference: route.params.reference,
+              supplier: route.params.supplier
+            })
+          }
+        ]
       },
       {
         path: 'customers',
