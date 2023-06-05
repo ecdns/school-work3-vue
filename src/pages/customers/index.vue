@@ -80,12 +80,7 @@ export default {
     getCustomers() {
       const resource = useResource("customer/all");
 
-      const token = localStorage.getItem("token");
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-
-      resource.list(1, {}, headers)
+      resource.list()
         .then(response => {
           console.log(response);
         })

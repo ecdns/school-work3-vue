@@ -31,6 +31,7 @@ const routes = [
   {
     path: "/login",
     component: () => import(`../pages/Login.vue`),
+    // beforeEnter: redirectIfAuthenticated
   },
   {
     path: "/register",
@@ -46,7 +47,8 @@ const routes = [
   },*/
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('../layouts/MainLayout.vue'),
+   beforeEnter: ifAuthenticated,
     children: [
       {
         path: '',
@@ -55,6 +57,7 @@ const routes = [
       {
         path: 'projects',
         component: () => import('pages/Projects.vue'),
+       beforeEnter: ifAuthenticated,
         children: [
           {
             path: '',
@@ -73,6 +76,7 @@ const routes = [
       {
         path: 'chat',
         component: () => import('pages/Chat.vue'),
+       beforeEnter: ifAuthenticated,
         children: [
           {
             path: ':id',
@@ -88,6 +92,7 @@ const routes = [
           {
             path:'',
             component: () => import('src/pages/products/index.vue'),
+             beforeEnter: ifAuthenticated,
           },
           {
             path:':id',
@@ -100,10 +105,12 @@ const routes = [
             })
           }
         ]
+
       },
       {
         path: 'customers',
         component: () => import('src/pages/Customers.vue'),
+       beforeEnter: ifAuthenticated,
         children: [
           {
             path: '',
@@ -117,7 +124,8 @@ const routes = [
       },
       {
         path: 'admin',
-        component: () => import('pages/Admin.vue')
+        component: () => import('pages/Admin.vue'),
+       beforeEnter: ifAuthenticated
       },
       {
         path: '/:catchAll(.*)*',

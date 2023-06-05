@@ -8,9 +8,10 @@ import axios from 'axios'
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({
-  baseURL: 'http://cyber-dodo.fr:8080/api/v1',
+  // baseURL: 'http://cyber-dodo.fr:8080/api/v1',
+  baseURL: 'http://172.20.10.2:8080/',
   headers: {
-    // 'Authorization': `Bearer ${localStorage.getItem('token')}`
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
 
     // autres en-têtes personnalisés si nécessaire
   },
