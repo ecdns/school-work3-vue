@@ -7,7 +7,7 @@
     </div>
     <q-dialog v-model="dialogVisible" position="absolute" transition-show="slide-down" transition-hide="slide-up"
       class="flex flex-center column">
-      <q-card style="min-width: 60vw">
+      <q-card style="min-width: 60vw" @click="getCustomers">
         <q-card-section>
           <q-form action="" method="post" @submit.prevent.stop="onSubmit">
             <CustomerForm ref="CustomerForm" />
@@ -24,6 +24,10 @@
 
 import CustomerListing from 'src/components/CustomerListing.vue';
 import CustomerForm from 'src/components/CustomerForm.vue';
+import { useResource } from "../../composables/resources.js"
+
+
+
 
 
 export default {
@@ -33,7 +37,7 @@ export default {
   },
   data() {
     return {
-
+      useResource,
       dialogVisible: false,
       customers: [
         {
@@ -58,8 +62,6 @@ export default {
 
   methods: {
     onSubmit() {
-
-
       this.customers.unshift(
         {
           name: this.$refs.CustomerForm.lastName + ' ' + this.$refs.CustomerForm.firstName,
@@ -73,7 +75,20 @@ export default {
 
         }
       )
-    }
+    },
+
+    getCustomers() {
+      const resource = useResource("customer/all");
+
+      resource.list()
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
   }
 }
 

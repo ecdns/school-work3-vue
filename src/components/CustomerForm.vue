@@ -1,7 +1,11 @@
 <template>
+  <div class="row flex justify-end"> <q-icon v-close-popup name="close" size="1.5rem" style="cursor:pointer" />
+  </div>
+
   <div class="row flex flex-center">
     <div class="col-10 ">
-      <p class="text-h6">Nouveau client </p>
+      <p class="text-h6 col-10">Nouveau client </p>
+
       <q-separator color="primary" class="q-my-md" />
       <div class="row justify-around q-my-sm">
         <q-input outlined v-model="lastName" name="lastName" label="Nom" class=" col-5" />

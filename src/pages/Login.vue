@@ -37,10 +37,40 @@
                             </q-form>
                         </div>
                     </div>
+                    <q-space />
+                    <div>
+                      <span class="text-center fw-bold">
+                        <router-link to="/send-reset-password" style="white-space: nowrap">
+                          Mot de passe oublié ?
+                        </router-link>
+                      </span>
+                    </div>
+                  </div>
                 </div>
+
+                <div class="text-center">
+                  <q-btn class="btn btn-block fit q-pa-sm" style="background-color: #ed2144; border-radius: 20px 20px"
+                    type="submit">
+                    <!-- <q-spinner v-if="spinner" variant="light" /> -->
+                    <!-- <span v-show="!spinner">Se connecter</span> -->
+                  </q-btn>
+                </div>
+
+                <q-separator />
+
+                <div class="text-center text-muted mt-1">
+                  Pas encore de compte ?
+                  <router-link to="/register" class="fw-bold text-body">
+                    Inscrivez-vous ici
+                  </router-link>
+                </div>
+              </q-form>
             </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -87,6 +117,7 @@ export default {
                 })
         }
     }
+  }
 }
 
 
@@ -94,70 +125,70 @@ export default {
 
 <style lang="scss" scoped>
 a {
-    color: grey;
+  color: grey;
 }
 
 .btn {
-    font-family: "Nunito", sans-serif;
-    font-weight: bold;
-    color: white;
-    text-transform: none;
-    font-size: 1.5em;
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  color: white;
+  text-transform: none;
+  font-size: 1.5em;
 }
 
 .container {
-    max-width: 720px;
+  max-width: 720px;
 }
 
 .vh-100 {
-    background-color: #e8f5ff !important;
-    background-repeat: no-repeat !important;
-    background-size: cover !important;
+  background-color: #e8f5ff !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
 }
 
 .login-page .card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 1px solid rgba(0, 0, 0, 0.125);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 .center {
-    text-align: center;
+  text-align: center;
 }
 
 .social {
-    gap: 15px;
-    margin: 4px;
-    padding: 15px;
-    word-spacing: 24px;
-    text-align: center;
-    white-space: nowrap;
+  gap: 15px;
+  margin: 4px;
+  padding: 15px;
+  word-spacing: 24px;
+  text-align: center;
+  white-space: nowrap;
 }
 </style>
 <style lang="scss">
 @media(max-width: $breakpoint-xs-max) {
-    .login-page .card {
-        background-color: rgba(255, 255, 255, 0.8) !important;
-        border: 0px !important;
-    }
+  .login-page .card {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    border: 0px !important;
+  }
 
-    .testme {
-        width: auto;
-        box-shadow: none;
-        margin: auto;
-    }
+  .testme {
+    width: auto;
+    box-shadow: none;
+    margin: auto;
+  }
 }
 
 @media(max-width: 800px) {
-    .testme {
-        height: 80vh !important;
-        width: 10%;
-        margin: auto;
-    }
+  .testme {
+    height: 80vh !important;
+    width: 10%;
+    margin: auto;
+  }
 }
 </style>
