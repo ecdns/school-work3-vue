@@ -1,9 +1,9 @@
 <template>
-  <q-header elevated>
-    <q-toolbar>
-      <q-toolbar-title>
-        Communica
-      </q-toolbar-title>
+    <q-header elevated>
+        <q-toolbar>
+            <q-toolbar-title>
+                Communica
+            </q-toolbar-title>
 
       <div>
         <q-btn icon="settings" color="black">
@@ -22,36 +22,33 @@
                   <img src="https://cdn.quasar.dev/img/avatar4.jpg">
                 </q-avatar>
 
-                <!-- <div class="text-subtitle1 q-mt-md q-mb-xs">{{ auth.me.firstName }} {{ auth.me.lastName }} -->
-                <!-- </div> -->
+                                <div class="text-subtitle1 q-mt-md q-mb-xs">{{ auth.me.firstName }} {{ auth.me.lastName }}
+                                </div>
 
                 <q-btn color="primary" label="Logout" push size="sm" v-close-popup />
               </div>
             </div>
-          </q-menu>
-        </q-btn>
-      </div>
-    </q-toolbar>
-  </q-header>
-  <q-drawer v-model="drawer" show-if-above :mini="miniState" @mouseover="miniState = false" @mouseout="miniState = true"
-    :width="300" :breakpoint="500" bordered class="bg-grey-3">
-    <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
-      <q-list>
-        <q-item clickable style="width: 100%;">
-          <q-item-section avatar>
-            <q-avatar size="50px">
-              <img src="https://cdn.quasar.dev/img/avatar4.jpg">
-            </q-avatar>
-          </q-item-section>
-          <q-item-section>
-            <!-- <q-item-label>{{ auth.me.firstName }} {{ auth.me.lastName }}</q-item-label> -->
-          </q-item-section>
-        </q-item>
-        <q-separator black />
-        <q-item clickable v-for="link in essentialLinks" :key="link.title" :to=link.link>
-          <q-item-section v-if="link.icon" avatar>
-            <q-icon :name="link.icon" />
-          </q-item-section>
+        </q-toolbar>
+    </q-header>
+    <q-drawer v-model="drawer" show-if-above :mini="miniState" @mouseover="miniState = false" @mouseout="miniState = true"
+        :width="300" :breakpoint="500" bordered class="bg-grey-3">
+        <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
+            <q-list>
+                <q-item clickable style="width: 100%;">
+                    <q-item-section avatar>
+                        <q-avatar size="50px">
+                            <img src="https://cdn.quasar.dev/img/avatar4.jpg">
+                        </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                        <q-item-label>{{ auth.me.firstName }} {{ auth.me.lastName }}</q-item-label>
+                    </q-item-section>
+                </q-item>
+                <q-separator black />
+                <q-item clickable v-for="link in essentialLinks" :key="link.title" :to=link.link>
+                    <q-item-section v-if="link.icon" avatar>
+                        <q-icon :name="link.icon" />
+                    </q-item-section>
 
           <q-item-section>
             <q-item-label>{{ link.title }}</q-item-label>
@@ -66,7 +63,7 @@
 <script>
 
 import { ref } from 'vue';
-import { useAuthStore } from '../stores/auth'
+import { useAuthStore } from 'src/stores/auth';
 
 const linksList = [
   {
@@ -102,17 +99,17 @@ const linksList = [
 ]
 
 export default {
-  setup() {
-    const auth = useAuthStore();
-    return { auth }
-  },
-  data() {
-    return {
-      essentialLinks: linksList,
-      drawer: ref(false),
-      miniState: ref(true)
-    };
-  },
+    setup() {
+        const auth = useAuthStore();
+        return { auth }
+    },
+    data() {
+        return {
+            essentialLinks: linksList,
+            drawer: ref(false),
+            miniState: ref(true)
+        };
+    },
 }
 
 </script>

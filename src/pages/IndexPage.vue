@@ -1,20 +1,15 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-page-container>
-      <BarChart />
-      <DoughnutChart />
-    </q-page-container>
-  </q-layout>
+  <div>
+    <monthly-totals-chart></monthly-totals-chart>
+  </div>
 </template>
 
 <script>
-import BarChart from 'src/components/BarChart.vue';
-import DoughnutChart from 'src/components/DoughnutChart.vue';
+import MonthlyTotalsChart from '../components/MonthlyTotalsChart.vue';
 
 export default {
   components: {
-    BarChart,
-    DoughnutChart
-  }
-}
+    MonthlyTotalsChart,
+  },
+};
 </script>

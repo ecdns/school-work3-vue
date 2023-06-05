@@ -1,10 +1,6 @@
 import { createRouterLayout } from "vue-router-layout";
 import { useAuthStore } from "src/stores/auth";
 
-const RouterLayout = createRouterLayout((layout) => {
-  return import(`../layouts/${layout}.vue`);
-});
-
 const ifAuthenticated = (to, from, next) => {
   const authStore = useAuthStore();
   if (authStore.isAuthenticated) {
@@ -20,44 +16,31 @@ const redirectIfAuthenticated = (to, from, next) => {
   const authStore = useAuthStore();
 
   if (authStore.isAuthenticated) {
-    next("/map");
+    next("/");
     return;
   }
   next();
 };
 
-
 const routes = [
   {
     path: "/login",
     component: () => import(`../pages/Login.vue`),
-    // beforeEnter: redirectIfAuthenticated
+    beforeEnter: redirectIfAuthenticated
   },
-  {
-    path: "/register",
-    component: () => import(`../pages/Register.vue`),
-  },
-  /*{
-    path: "/send-reset-password",
-    component: () => import(`../pages/send-reset-password.vue`),
-  },
-  {
-    path: "/reset-password/:token",
-    component: () => import(`../pages/reset-password/_token.vue`),
-  },*/
   {
     path: '/',
     component: () => import('../layouts/MainLayout.vue'),
-   beforeEnter: ifAuthenticated,
+    beforeEnter: ifAuthenticated,
     children: [
       {
         path: '',
-        component: () => import('pages/IndexPage.vue')
+        component: () => import('../pages/IndexPage.vue')
       },
       {
         path: 'projects',
         component: () => import('pages/Projects.vue'),
-       beforeEnter: ifAuthenticated,
+        beforeEnter: ifAuthenticated,
         children: [
           {
             path: '',
@@ -76,7 +59,7 @@ const routes = [
       {
         path: 'chat',
         component: () => import('pages/Chat.vue'),
-       beforeEnter: ifAuthenticated,
+        beforeEnter: ifAuthenticated,
         children: [
           {
             path: ':id',
@@ -86,31 +69,13 @@ const routes = [
       },
       {
         path: 'products',
-        component: () => import('src/pages/Products.vue'),
-
-        children: [
-          {
-            path:'',
-            component: () => import('src/pages/products/index.vue'),
-             beforeEnter: ifAuthenticated,
-          },
-          {
-            path:':id',
-            component: () => import('pages/products/_id/index.vue'),
-            props: route => ({
-              id: route.params.id,
-              name: route.params.name,
-              reference: route.params.reference,
-              supplier: route.params.supplier
-            })
-          }
-        ]
-
+        component: () => import('pages/Products.vue'),
+        beforeEnter: ifAuthenticated,
       },
       {
         path: 'customers',
         component: () => import('src/pages/Customers.vue'),
-       beforeEnter: ifAuthenticated,
+        beforeEnter: ifAuthenticated,
         children: [
           {
             path: '',
@@ -125,7 +90,7 @@ const routes = [
       {
         path: 'admin',
         component: () => import('pages/Admin.vue'),
-       beforeEnter: ifAuthenticated
+        beforeEnter: ifAuthenticated
       },
       {
         path: '/:catchAll(.*)*',

@@ -1,13 +1,14 @@
 import { defineStore } from "pinia";
 import { LocalStorage } from "quasar";
 import { api } from "src/boot/axios";
+import CryptoJS from "crypto-js";
+
+var encryptionKey = 'enzoCestLeplusbeauEtLeoAussiEtViveLe69';
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     token: LocalStorage.getItem("token"),
     me: null,
-    coordoLat: null,
-    coordoLng: null,
   }),
   getters: {
     isAuthenticated: (state) => !!state.token,
@@ -15,13 +16,12 @@ export const useAuthStore = defineStore("auth", {
   },
   actions: {
     login(email, password) {
-      return api.post('/authenticate', { email, password })
-      .then(res => {
-          this.setToken(res.data.token);
-          this.setRefreshToken(res.data.refresh_token);
-
+/*      password = CryptoJS.AES.encrypt(password, encryptionKey).toString()*/
+      return api.post('/user/login', { email, password })
+        .then(res => {
+          this.setToken(res.data.jwt);
           return this.loadUserData();
-      });
+        });
     },
     logout() {
       this.token = null;
@@ -32,7 +32,12 @@ export const useAuthStore = defineStore("auth", {
     loadUserData(cached = true) {
       return new Promise((resolve, reject) => {
         if (!cached || !this.me) {
-          return api.get('/me').then(res => {
+          return api.get('/user/me', {
+            headers: {
+              'Authorization': `Bearer ${this.getToken()}`
+            }
+          }
+          ).then(res => {
             this.setMe(res.data);
             return resolve(this.me);
           }, (error) => {
@@ -41,7 +46,7 @@ export const useAuthStore = defineStore("auth", {
         }
         return resolve(this.me);
       });
-  
+
     },
     setToken(token) {
       this.token = token;
@@ -55,13 +60,6 @@ export const useAuthStore = defineStore("auth", {
     },
     getRefreshToken() {
       return LocalStorage.getItem("refreshToken");
-    },
-    setLocation(lat,lng) {
-      this.coordoLat = lat
-      this.coordoLng = lng
-    },
-    getLocation() {
-      return {lat : this.coordoLat, lng : this.coordoLng}
     },
     setMe(me) {
       this.me = me;
