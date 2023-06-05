@@ -16,7 +16,7 @@ export const useAuthStore = defineStore("auth", {
   },
   actions: {
     login(email, password) {
-      password = CryptoJS.AES.encrypt(password, encryptionKey).toString()
+/*      password = CryptoJS.AES.encrypt(password, encryptionKey).toString()*/
       return api.post('/user/login', { email, password })
         .then(res => {
           this.setToken(res.data.jwt);
