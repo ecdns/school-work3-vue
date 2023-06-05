@@ -1,10 +1,6 @@
 <template>
     <div class="q-pa-md fit flex row justify-center">
-        <q-input v-model="search" style="width: 80%;" label="Rechercher un projet" filled type="search">
-            <template v-slot:append>
-                <q-icon name="search" />
-            </template>
-        </q-input>
+        <SearchBar :data="items" />
         <q-btn icon="add" color="primary" label="Nouveau projet" @click="router.push('/projects/create')" />
     </div>
     <div class="q-ma-md">
@@ -21,10 +17,12 @@
 import ProjectList from 'src/components/ProjectList.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import SearchBar from 'src/components/SearchBar.vue';
 
 export default {
     components: {
-        ProjectList
+        ProjectList,
+        SearchBar
     },
     setup() {
         const router = useRouter()
