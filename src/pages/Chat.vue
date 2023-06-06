@@ -13,44 +13,34 @@
 <script>
 import Contacts from 'src/components/Contacts.vue';
 import SearchBar from 'src/components/SearchBar.vue';
+import { useResource } from 'src/composables/resources';
 
 export default {
     components: {
         Contacts,
         SearchBar
     },
+    setup() {
+        const projects = useResource('project');
+
+        return { projects }
+    },
     data() {
         return {
             isSearch: false,
-            contacts: [{
-                id: 1,
-                name: 'Ruddy Jedrzej',
-                email: 'rjedrzej0@discuz.net',
-                letter: 'R',
-                conversation: 1
-            }, {
-                id: 2,
-                name: 'Mallorie Alessandrini',
-                email: 'malessandrini1@marketwatch.com',
-                letter: 'M',
-                conversation: 1
-            }, {
-                id: 3,
-                name: 'Elisabetta Wicklen',
-                email: 'ewicklen2@microsoft.com',
-                letter: 'E',
-                conversation: 1
-            }, {
-                id: 4,
-                name: 'Seka Fawdrey',
-                email: 'sfawdrey3@wired.com',
-                letter: 'S',
-                conversation: 1
-            }],
+            contacts: [],
         }
     },
     created() {
-        console.log(this.isSearch)
+        this.reloadData();
+    },
+    methods: {
+        reloadData() {
+            this.projects.list().then((res) => {
+                this.contacts = res.data;
+                console.log(this.contacts)
+            })
+        }
     }
 }
 

@@ -28,6 +28,7 @@ export const useAuthStore = defineStore("auth", {
       this.me = null;
       LocalStorage.remove('token');
       LocalStorage.remove('refreshToken');
+      window.location.reload();
     },
     loadUserData(cached = true) {
       return new Promise((resolve, reject) => {

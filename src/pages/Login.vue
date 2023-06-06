@@ -20,8 +20,8 @@
                                 </label>
 
                                 <div class="text-center">
-                                    <q-btn class="btn btn-block fit q-pa-sm"
-                                        style="background-color: #ed2144; border-radius: 20px 20px" type="submit">
+                                    <q-btn class="btn btn-block fit q-pa-sm" color="primary"
+                                        style="border-radius: 20px 20px" type="submit">
                                         <span>Se connecter</span>
                                     </q-btn>
                                 </div>

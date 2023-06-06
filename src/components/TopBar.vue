@@ -24,7 +24,7 @@
                             <div class="text-subtitle1 q-mt-md q-mb-xs">{{ auth.me.firstName }} {{ auth.me.lastName }}
                             </div>
 
-                            <q-btn color="primary" label="Logout" push size="sm" v-close-popup />
+                            <q-btn @click="auth.logout()" color="primary" label="Logout" push size="sm" v-close-popup />
                         </div>
                     </div>
                 </q-menu>

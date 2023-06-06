@@ -1,5 +1,5 @@
 <template>
-    <q-list>
+    <q-list style="width: -webkit-fill-available;">
         <ProjectCard v-for="(project, id) in projects" :project="project" v-bind:key="id" />
     </q-list>
 </template>
