@@ -1,18 +1,35 @@
 <template>
   <q-page>
+    <div v-if="selected.length > 0">
+      <q-btn flat color="primary" label="Créer un projet" />
+      <q-btn flat color="red" label="SUPPRIMER" @click="confirm = true" />
+    </div>
 
-    <div class="q-pa-md">
+    <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <span class="q-ml-sm">Voulez-vous vraiment supprimer le/les client(s) selectioné(s) ?</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Annuler" color="primary" v-close-popup />
+          <q-btn flat label="OUI" color="red" @click="deleteAction(clickedActionIndex)" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <div class="q-pa-md" @click="deleteCustomer">
+
       <q-table flat bordered title="Clients" :rows="customers" :columns="columns" row-key="email"
         :selected-rows-label="getSelectedString" selection="multiple" v-model:selected="selected"
         @row-click="handleRowClick" />
 
-      <!-- <div class="q-mt-md">
-      Selected: {{ JSON.stringify(selected) }}
-    </div> -->
+      <div class="q-mt-md">
+        Selected: {{ JSON.stringify(selected) }}
+      </div>
     </div>
   </q-page>
 </template>
-
 
 <script>
 import { ref } from 'vue'
@@ -27,7 +44,7 @@ const columns = [
     label: 'Nom',
     align: 'left',
     field: row => row.name,
-    format: val => `${val}`,
+    format: val => val,
     sortable: true
   },
   { name: 'email', align: 'center', label: 'Email', field: 'email', sortable: true },
@@ -36,172 +53,71 @@ const columns = [
 
 ]
 
-// let customers = ref([
-//   {
-//     id: 1,
-//     name: 'Frozen Yogurt',
-//     email: 'freddyyogurt@gmail.com',
-//     customerCompanyName: 'Amazon',
-//     post: 'Manager',
-
-//   },
-//   {
-//     id: 2,
-//     name: 'Froze Yogurt',
-//     email: 'freddyryogurt@gmail.com',
-//     customerCompanyName: 'Amazon',
-//     post: 'Manager',
-
-//   },
-
-
-// ])
-
-
-
+const selected = ref([])
 export default {
   props: {
     customers: ref(Array),
   },
-
   setup() {
-    const router = useRouter()
+    const router = useRouter();
 
-    const $q = useQuasar()
-    const selected = ref([])
-
-    const lastName = ref(null)
-    const lastNameRef = ref(null)
-
-    const firstName = ref(null)
-    const firstNameRef = ref(null)
-
-    const email = ref(null)
-    const emailRef = ref(null)
-
-    const address = ref(null)
-    const addressRef = ref(null)
-
-    const city = ref(null)
-    const cityRef = ref(null)
-
-    const zipCode = ref(null)
-    const zipCodeRef = ref(null)
-
-    const phone = ref(null)
-    const phoneRef = ref(null)
-
-    const customerCompanyName = ref(null)
-    const customerCompanyNameRef = ref(null)
-
-    const post = ref(null)
-    const postRef = ref(null)
-
-
+    return {
+      router
+    }
+  },
+  data() {
     return {
 
       dialogVisible: ref(false),
-      router,
-
+      confirm: false,
       selected,
       columns,
-      // customers,
 
-      lastName,
-      lastNameRef,
-
-      firstName,
-      firstNameRef,
-      email,
-      emailRef,
-
-      address,
-      addressRef,
-
-      city,
-      cityRef,
-
-      zipCode,
-      zipCodeRef,
-
-      phone,
-      phoneRef,
-
-      customerCompanyName,
-      customerCompanyNameRef,
-
-      post,
-      postRef,
-
-
-
-      onSubmit() {
-        firstNameRef.value.validate()
-
-
-        if (firstNameRef.value.hasError) {
-          // form has error
-        }
-
-        else {
-          // console.log(customers)
-          customers.value.unshift(
-            {
-              name: lastName.value + ' ' + firstName.value,
-              email: email.value,
-              customerCompanyName: customerCompanyName.value,
-              post: post.value,
-              address: address.value,
-              city: city.value,
-              zipCode: zipCode.value,
-              phone: phone.value
-
-            }
-          )
-          console.log(customers.value)
-
-          // $q.notify({
-          //   icon: 'done',
-          //   color: 'positive',
-          //   message: 'Submitted'
-          // })
-
-        }
-      },
-
-      handleRowClick(_, row) {
-
-        router.push(`/customers/${row.id}`)
-      },
-
-
-      getSelectedString() {
-        return selected.value.length === 0 ? '' : `${selected.value.length} record${selected.value.length > 1 ? 's' : ''} selected of ${rows.value.length}`
-      },
-
-
+      lastName: '',
+      firstName: '',
+      email: '',
+      address: '',
+      city: '',
+      zipCode: '',
+      phone: '',
+      customerCompanyName: '',
+      post: '',
     }
+  },
+  methods: {
+    onSubmit() {
+      customers.value.unshift(
+        {
+          name: lastName.value + ' ' + firstName.value,
+          email: email.value,
+          customerCompanyName: customerCompanyName.value,
+          post: post.value,
+          address: address.value,
+          city: city.value,
+          zipCode: zipCode.value,
+          phone: phone.value
+        }
+      )
+    },
+    handleRowClick(_, row) {
+      this.router.push(`/customers/${row.id}`)
+    },
+    getSelectedString() {
+      // return selected.value.length === 0 ? '' : ${selected.value.length} record${selected.value.length > 1 ? 's' : ''} selected of ${this.customers.length}
+
+      // this.isCustomerSelected = true
+      // console.log(selected.value[0].email)
+      // console.log(this.isCustomerSelected)
+    },
+
+    deleteCustomer() {
+      selected.value.map((customerRow) => {
+        let selectedCustomerEmail = customerRow.email
+        console.log(selectedCustomerEmail)
+      })
+    }
+
   },
   components: {}
 }
 </script>
-
-<style lang="sass" >
-.add_customer_button
-  position: absolute
-  z-index: 1
-  right: 30px
-  top: 70px
-  cursor:  pointer
-
-
-.flex-input
-  display: flex
-
-.submit_button
-  width:100px
-  margin:20px auto
-  display: block
-
-
-</style>

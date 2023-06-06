@@ -25,15 +25,6 @@
                                         <span>Se connecter</span>
                                     </q-btn>
                                 </div>
-
-                                <q-separator />
-
-                                <div class="text-center text-muted mt-1">
-                                    Pas encore de compte ?
-                                    <router-link to="/register" class="fw-bold text-body">
-                                        Inscrivez-vous ici
-                                    </router-link>
-                                </div>
                             </q-form>
                         </div>
                     </div>

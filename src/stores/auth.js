@@ -3,7 +3,7 @@ import { LocalStorage } from "quasar";
 import { api } from "src/boot/axios";
 import CryptoJS from "crypto-js";
 
-var encryptionKey = 'enzoCestLeplusbeauEtLeoAussiEtViveLe69';
+// var encryptionKey = 'enzoCestLeplusbeauEtLeoAussiEtViveLe69';
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -16,7 +16,7 @@ export const useAuthStore = defineStore("auth", {
   },
   actions: {
     login(email, password) {
-/*      password = CryptoJS.AES.encrypt(password, encryptionKey).toString()*/
+      // password = CryptoJS.AES.encrypt(password, encryptionKey).toString()
       return api.post('/user/login', { email, password })
         .then(res => {
           this.setToken(res.data.jwt);
