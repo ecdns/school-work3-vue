@@ -92,7 +92,7 @@ export default {
         },
         onSubmit() {
             this.project.creator = this.auth.me.id;
-            this.project.company = this.auth.me.customer;
+            this.project.company = this.auth.me.company;
             this.project.customer = this.project.customer.id;
             this.project.projectStatus = this.project.projectStatus.id;
             this.projects.create(this.project).then((res) => {
