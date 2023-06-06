@@ -1,3 +1,4 @@
+import { LocalStorage } from "quasar";
 import { useAPIRequest, useDeferredAPIRequest } from "./api";
 
 export const useResource = (resource) => {
@@ -15,7 +16,7 @@ export const useResource = (resource) => {
         request.execute(`/${resource}/all`, {
           params: query,
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            'Authorization': `Bearer ${LocalStorage.getItem('token')}`
           }
         });
         request.then(({ data, error }) => {
@@ -48,6 +49,7 @@ export const useResource = (resource) => {
           data: payload,
           headers: {
             "Content-Type": contentType ? contentType : "application/json",
+            'Authorization' : `Bearer ${LocalStorage.getItem('token')}`
           },
         });
         request.then(({ data, error }) => {
@@ -61,7 +63,7 @@ export const useResource = (resource) => {
         const request = useDeferredAPIRequest();
         request.execute(`/${resource}/${id}`, {
           headers: {
-            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+            'Authorization' : `Bearer ${LocalStorage.getItem('token')}`
           }
         });
         request.then(({ data, error }) => {
@@ -77,7 +79,7 @@ export const useResource = (resource) => {
           method: "PUT",
           data: payload,
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            'Authorization': `Bearer ${LocalStorage.getItem('token')}`
           }
         });
         request.then(({ data, error }) => {

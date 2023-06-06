@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import {Chart} from 'chart.js';
-import {LocalStorage} from "quasar";
+import { Chart } from 'chart.js';
+import { LocalStorage } from "quasar";
 
 export default {
   mounted() {
@@ -22,12 +22,12 @@ export default {
         'Authorization': `Bearer ${token}`
       }
 
-      fetch('http://cyber-dodo.fr:8080/api/v1/invoice/all', {headers} )
+      fetch('http://cyber-dodo.fr:8080/api/v1/invoice/all', { headers })
         .then(response => response.json())
         .then(invoiceData => {
           console.log(invoiceData);
 
-// Association entre le mois/année de création et la quantité totale de produits
+          // Association entre le mois/année de création et la quantité totale de produits
           const monthlyTotals = {};
 
           invoiceData.forEach((invoice) => {
@@ -53,24 +53,24 @@ export default {
           console.log(labels);
           console.log(data);
 
-        //   const ctx = this.$refs.chart.getContext('2d');
-        //   new Chart(ctx, {
-        //     type: 'bar',
-        //     data : monthlyTotals,
-        //     options: {
-        //       scales: {
-        //         y: {
-        //           beginAtZero: true
-        //         }
-        //       }
-        //     }
-        //   });
-        // })
-        // .catch(error => {
-        //   console.error("Erreur lors de la récupération des données de la facture :", error);
-         });
+          const ctx = this.$refs.chart.getContext('2d');
+          new Chart(ctx, {
+            type: 'bar',
+            data: monthlyTotals,
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+        })
+        .catch(error => {
+          console.error("Erreur lors de la récupération des données de la facture :", error);
+        });
 
-     },
+    },
   },
 };
 
