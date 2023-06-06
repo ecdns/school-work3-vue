@@ -60,7 +60,8 @@ export default {
     const projectId = ref(route.params.id);
 
     onMounted(() => {
-      let data = this.$route.params.data;
+      console.log(route)
+      let data = route.params.data;
       console.log("data is", data);
     });
     return {

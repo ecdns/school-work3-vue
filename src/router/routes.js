@@ -71,6 +71,16 @@ const routes = [
         path: 'products',
         component: () => import('pages/Products.vue'),
         beforeEnter: ifAuthenticated,
+        children: [
+          {
+            path: '',
+            component: () => import('pages/products/index.vue')
+          },
+          {
+            path: ':id',
+            component: () => import('pages/products/_id/index.vue')
+          }
+        ]
       },
       {
         path: 'customers',

@@ -5,29 +5,30 @@
                 Communica
             </q-toolbar-title>
 
-      <div>
-        <q-btn icon="settings" color="black">
-          <q-menu>
-            <div class="row no-wrap q-pa-md">
-              <div class="column">
-                <div class="text-h6 q-mb-md">Settings</div>
-                <q-toggle v-model="mobileData" label="Use Mobile Data" />
-                <q-toggle v-model="bluetooth" label="Bluetooth" />
-              </div>
+            <q-btn icon="settings" color="black">
+                <q-menu>
+                    <div class="row no-wrap q-pa-md">
+                        <div class="column">
+                            <div class="text-h6 q-mb-md">Settings</div>
+                            <q-toggle v-model="mobileData" label="Use Mobile Data" />
+                            <q-toggle v-model="bluetooth" label="Bluetooth" />
+                        </div>
 
-              <q-separator vertical inset class="q-mx-lg" />
+                        <q-separator vertical inset class="q-mx-lg" />
 
-              <div class="column items-center">
-                <q-avatar size="72px">
-                  <img src="https://cdn.quasar.dev/img/avatar4.jpg">
-                </q-avatar>
+                        <div class="column items-center">
+                            <q-avatar size="72px">
+                                <img src="https://cdn.quasar.dev/img/avatar4.jpg">
+                            </q-avatar>
 
-                                <div class="text-subtitle1 q-mt-md q-mb-xs">{{ auth.me.firstName }} {{ auth.me.lastName }}
-                                </div>
+                            <div class="text-subtitle1 q-mt-md q-mb-xs">{{ auth.me.firstName }} {{ auth.me.lastName }}
+                            </div>
 
-                <q-btn color="primary" label="Logout" push size="sm" v-close-popup />
-              </div>
-            </div>
+                            <q-btn color="primary" label="Logout" push size="sm" v-close-popup />
+                        </div>
+                    </div>
+                </q-menu>
+            </q-btn>
         </q-toolbar>
     </q-header>
     <q-drawer v-model="drawer" show-if-above :mini="miniState" @mouseover="miniState = false" @mouseout="miniState = true"
@@ -50,14 +51,14 @@
                         <q-icon :name="link.icon" />
                     </q-item-section>
 
-          <q-item-section>
-            <q-item-label>{{ link.title }}</q-item-label>
-            <q-item-label caption>{{ link.caption }}</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-scroll-area>
-  </q-drawer>
+                    <q-item-section>
+                        <q-item-label>{{ link.title }}</q-item-label>
+                        <q-item-label caption>{{ link.caption }}</q-item-label>
+                    </q-item-section>
+                </q-item>
+            </q-list>
+        </q-scroll-area>
+    </q-drawer>
 </template>
 
 <script>
@@ -66,36 +67,36 @@ import { ref } from 'vue';
 import { useAuthStore } from 'src/stores/auth';
 
 const linksList = [
-  {
-    title: 'Tableau de bord',
-    icon: 'dashboard',
-    link: '/'
-  },
-  {
-    title: 'Projets',
-    icon: 'view_list',
-    link: '/projects'
-  },
-  {
-    title: 'Chat',
-    icon: 'question_answer',
-    link: '/chat'
-  },
-  {
-    title: 'Produits / Services',
-    icon: 'receipt',
-    link: '/products'
-  },
-  {
-    title: 'Clients',
-    icon: 'contact_page',
-    link: '/customers'
-  },
-  {
-    title: 'Administration',
-    icon: 'lock_outline',
-    link: '/admin'
-  },
+    {
+        title: 'Tableau de bord',
+        icon: 'dashboard',
+        link: '/'
+    },
+    {
+        title: 'Projets',
+        icon: 'view_list',
+        link: '/projects'
+    },
+    {
+        title: 'Chat',
+        icon: 'question_answer',
+        link: '/chat'
+    },
+    {
+        title: 'Produits / Services',
+        icon: 'receipt',
+        link: '/products'
+    },
+    {
+        title: 'Clients',
+        icon: 'contact_page',
+        link: '/customers'
+    },
+    {
+        title: 'Administration',
+        icon: 'lock_outline',
+        link: '/admin'
+    },
 ]
 
 export default {
