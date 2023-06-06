@@ -68,12 +68,17 @@ export default {
                 .login(this.credentials.email, this.credentials.password)
                 .then(() => {
                     window.location.reload();
-                    $q.notify({
+                    this.q.notify({
                         icon: 'done',
                         color: 'positive',
                         message: 'Connexion réussie'
                     })
                 }).catch(() => {
+                    this.q.notify({
+                        icon: 'close',
+                        color: 'negative',
+                        message: 'Échec de connexion'
+                    })
                     this.error = "Identifiant ou mot de passe incorrect";
                 })
         }

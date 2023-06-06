@@ -14,7 +14,7 @@ export const useResource = (resource) => {
       return new Promise((resolve, reject) => {
         const request = useDeferredAPIRequest();
         request.execute(`/${resource}/all`, {
-          params: query,
+          // params: query,
           headers: {
             'Authorization': `Bearer ${LocalStorage.getItem('token')}`
           }
@@ -22,8 +22,7 @@ export const useResource = (resource) => {
         request.then(({ data, error }) => {
           if (error.value) reject(error.value);
           resolve({
-            data: data.value["hydra:member"],
-            totalItems: data.value["hydra:totalItems"],
+            data: data.value,
           });
         }, reject);
       });

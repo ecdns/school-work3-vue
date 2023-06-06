@@ -144,8 +144,8 @@ export default {
     },
     methods: {
         reloadData() {
-            this.projects.list(1, () => {
-                this.items = res;
+            this.projects.list().then((res) => {
+                this.items = res
             })
         }
     }
