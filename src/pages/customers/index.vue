@@ -15,7 +15,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    <CustomerListing :customers=customers></CustomerListing>
+    <CustomerListing :customers=items></CustomerListing>
   </q-page>
 </template>
 
@@ -37,26 +37,9 @@ export default {
   },
   data() {
     return {
-      useResource,
       dialogVisible: false,
-      customers: [
-        {
-          id: 1,
-          name: 'Mathis Dal',
-          email: 'freddyyogurt@gmail.com',
-          customerCompanyName: 'Amazon',
-          post: 'Manager',
-
-        },
-        {
-          id: 2,
-          name: 'Froze Yogurt',
-          email: 'freddyryogurt@gmail.com',
-          customerCompanyName: 'Amazon',
-          post: 'Manager',
-
-        },
-      ]
+      customers: useResource('customer'),
+      items: []
     }
   },
 
@@ -78,17 +61,20 @@ export default {
     },
 
     getCustomers() {
-      const resource = useResource("customer/all");
-
-      resource.list()
+      this.customers.list()
         .then(response => {
-          console.log(response);
+          this.items = response.data
+          // console.log(this.items[0])
         })
         .catch(error => {
           console.log(error);
         });
     },
 
+  },
+
+  created() {
+    this.getCustomers();
   }
 }
 

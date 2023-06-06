@@ -24,9 +24,9 @@
         :selected-rows-label="getSelectedString" selection="multiple" v-model:selected="selected"
         @row-click="handleRowClick" />
 
-      <div class="q-mt-md">
+      <!-- <div class="q-mt-md">
         Selected: {{ JSON.stringify(selected) }}
-      </div>
+      </div> -->
     </div>
   </q-page>
 </template>
@@ -43,12 +43,13 @@ const columns = [
     required: true,
     label: 'Nom',
     align: 'left',
-    field: row => row.name,
+    field: "lastName",
     format: val => val,
     sortable: true
   },
+  { name: 'firstName', align: 'center', label: 'Prénom', field: 'firstName', sortable: true },
   { name: 'email', align: 'center', label: 'Email', field: 'email', sortable: true },
-  { name: 'customerCompanyName', label: 'Société', field: 'customerCompanyName', sortable: true },
+  { name: 'company', label: 'Société', field: row => row.company.name, sortable: true },
   { name: 'post', label: 'Rôle', field: 'post' },
 
 ]
