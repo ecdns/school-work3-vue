@@ -92,6 +92,9 @@ export const useResource = (resource) => {
         const request = useDeferredAPIRequest();
         request.execute(`/${resource}/${id}`, {
           method: "DELETE",
+          headers: {
+            'Authorization': `Bearer ${LocalStorage.getItem('token')}`
+          }
         });
         request.then(({ data, error }) => {
           if (error.value) reject(error.value);
