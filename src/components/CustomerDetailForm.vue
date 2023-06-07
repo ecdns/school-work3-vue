@@ -1,39 +1,40 @@
 <template>
   <q-form action="" method="post" @submit.prevent.stop="onSubmit">
-    <q-icon @click="UpdateCustomer" :name="updateDataIcon" size="2em" color="primary" class="q-ml-lg"></q-icon>
+    <q-icon @click="updateCustomerIcon" :name="updateDataIcon" size="2em" color="primary" class="q-ml-lg"></q-icon>
     <div class="row flex flex-center">
       <div class="col-10 ">
         <div class="row justify-around q-my-sm">
-          <q-input outlined :readonly="readOnlyData" v-model="lastName" name="lastName" label="Nom"
+          <q-input outlined :readonly="readOnlyData" v-model="item.lastName" name="lastName" label="Nom"
             class=" input col-5" />
-          <q-input outlined :readonly="readOnlyData" v-model="firstName" name="firstName" label="Prénom"
+          <q-input outlined :readonly="readOnlyData" v-model="item.firstName" name="firstName" label="Prénom"
             class=" input col-5" />
         </div>
         <div class="row justify-around  q-my-sm">
-          <q-input outlined :readonly="readOnlyData" v-model="customerCompanyName" name="customerCompanyName"
-            label="Société" class="  input col-5" />
-          <q-input outlined :readonly="readOnlyData" v-model="post" name="post" label="Rôle" class="  input col-5" />
+          <q-input outlined :readonly="readOnlyData" v-model="item.name" name="customerCompanyName" label="Société"
+            class="  input col-5" />
+          <q-input outlined :readonly="readOnlyData" v-model="item.job" name="post" label="Rôle" class="  input col-5" />
         </div>
         <div class="row justify-around q-my-sm">
-          <q-input outlined :readonly="readOnlyData" v-model="phone" name="phone" label="Téléphone"
+          <q-input outlined :readonly="readOnlyData" v-model="item.phone" name="phone" label="Téléphone"
             class="  input col-5" />
-          <q-input outlined :readonly="readOnlyData" v-model="email" name="email" label="Email" class="  input col-5" />
-        </div>
-        <div class="row justify-around q-my-sm">
-          <q-input outlined :readonly="readOnlyData" v-model="address" name="address" label="Adresse"
-            class="  input col-5" />
-          <q-input outlined :readonly="readOnlyData" v-model="country" name="country" label="Pays"
+          <q-input outlined :readonly="readOnlyData" v-model="item.email" name="email" label="Email"
             class="  input col-5" />
         </div>
         <div class="row justify-around q-my-sm">
-          <q-input outlined :readonly="readOnlyData" v-model="zipCode" name="zipCode" ref="zipCodeRef" label="Code Postal"
-            class=" input col-3" />
-          <q-input outlined :readonly="readOnlyData" v-model="city" name="city" label="Ville" class="input col-7" />
+          <q-input outlined :readonly="readOnlyData" v-model="item.address" name="address" label="Adresse"
+            class="  input col-5" />
+          <q-input outlined :readonly="readOnlyData" v-model="item.country" name="country" label="Pays"
+            class="  input col-5" />
+        </div>
+        <div class="row justify-around q-my-sm">
+          <q-input outlined :readonly="readOnlyData" v-model="item.zipCode" name="zipCode" ref="zipCodeRef"
+            label="Code Postal" class=" input col-3" />
+          <q-input outlined :readonly="readOnlyData" v-model="item.city" name="city" label="Ville" class="input col-7" />
         </div>
 
         <div class="flex flex-center q-py-md">
-          <q-btn class="" outlined ripple label="Mettre à jour" :disable="!areDataUpdated" type="submit"
-            color="primary" />
+          <q-btn class="" outlined ripple label="Mettre à jour" :disable="!areDataUpdated" color="primary"
+            @click="updateCustomer" />
         </div>
       </div>
 
@@ -42,30 +43,47 @@
 </template>
 
 <script>
+import { useResource } from "../composables/resources.js"
+import { useRoute } from 'vue-router';
+
+
+
 export default {
+  setup() {
+    const route = useRoute()
+    return {
+      route,
+    }
+  },
+
   data() {
     return {
+
       readOnlyData: true,
       updateDataIcon: "lock",
+      customer: useResource('customer'),
+      item: {},
+      copyItem: {},
+      updatedData: {},
 
-      lastName: 'Jhon',
-      firstName: 'Doe',
       customerCompanyName: 'Carrefour',
       post: 'Manager',
-      phone: '0785458487',
-      email: 'jhon.doe@carrefour.fr',
-      address: '12 rue saint honoré',
-      country: 'France',
-      zipCode: '78 410',
-      city: 'Paris',
-
-
     }
   },
 
   computed: {
     areDataUpdated() {
-      if (this.lastName !== "Jhon") {
+      if (this.copyItem.lastName !== this.item.lastName ||
+        this.copyItem.firstName !== this.item.firstName ||
+        this.copyItem.email !== this.item.email ||
+        this.copyItem.address !== this.item.address ||
+        this.copyItem.city !== this.item.city ||
+        this.copyItem.country !== this.item.country ||
+        this.copyItem.zipCode !== this.item.zipCode ||
+        this.copyItem.phone !== this.item.phone ||
+        this.copyItem.name !== this.item.name ||
+        this.copyItem.job !== this.item.job
+      ) {
         return true;
       }
       return false;
@@ -74,16 +92,52 @@ export default {
 
 
   methods: {
+    getUpdatedData() {
+      for (const property in this.item) {
+        if (this.copyItem[property] !== this.item[property]) {
+          this.updatedData[property] = this.item[property]
+        }
+      }
+      return JSON.stringify(this.updatedData)
+    },
 
 
-    UpdateCustomer() {
+    updateCustomerIcon() {
       this.readOnlyData = !this.readOnlyData,
         this.readOnlyData ? this.updateDataIcon = "lock" : this.updateDataIcon = "lock_open"
 
     },
-  }
 
+    updateCustomer() {
+      this.customer.update(this.route.params.id, this.getUpdatedData())
+        .then((res) => console.log(res))
+      // console.log(this.getUpdatedData())
+    },
+
+    getOneCustomer() {
+      this.customer.get(this.route.params.id)
+        .then((res) => {
+          this.item = res
+          this.copyItem = {
+            ...this.item
+          }
+          this.$emit('loadHeader', `${this.item.firstName}, ${this.item.lastName} `)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    test() {
+      this.$emit('loadHeader', "hoy")
+    }
+  },
+  created() {
+    this.getOneCustomer();
+
+  },
 }
 </script>
 
 <style></style>
+

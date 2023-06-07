@@ -1,7 +1,6 @@
 <template>
   <q-page>
     <div v-if="selected.length > 0">
-      <q-btn flat color="primary" label="Créer un projet" />
       <q-btn flat color="red" label="SUPPRIMER" @click="confirm = true" />
     </div>
 
@@ -24,9 +23,7 @@
         :selected-rows-label="getSelectedString" selection="multiple" v-model:selected="selected"
         @row-click="handleRowClick" />
 
-      <!-- <div class="q-mt-md">
-        Selected: {{ JSON.stringify(selected) }}
-      </div> -->
+
     </div>
   </q-page>
 </template>
@@ -39,7 +36,7 @@ import { useRouter } from 'vue-router';
 
 const columns = [
   {
-    name: 'desc',
+    name: 'lastName',
     required: true,
     label: 'Nom',
     align: 'left',
@@ -49,8 +46,8 @@ const columns = [
   },
   { name: 'firstName', align: 'center', label: 'Prénom', field: 'firstName', sortable: true },
   { name: 'email', align: 'center', label: 'Email', field: 'email', sortable: true },
-  { name: 'company', label: 'Société', field: row => row.company.name, sortable: true },
-  { name: 'post', label: 'Rôle', field: 'post' },
+  { name: 'company', align: 'center', label: 'Société', field: 'name', sortable: true },
+  { name: 'job', align: 'center', label: 'Rôle', field: 'job' },
 
 ]
 
@@ -86,29 +83,9 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
-      customers.value.unshift(
-        {
-          name: lastName.value + ' ' + firstName.value,
-          email: email.value,
-          customerCompanyName: customerCompanyName.value,
-          post: post.value,
-          address: address.value,
-          city: city.value,
-          zipCode: zipCode.value,
-          phone: phone.value
-        }
-      )
-    },
+
     handleRowClick(_, row) {
       this.router.push(`/customers/${row.id}`)
-    },
-    getSelectedString() {
-      // return selected.value.length === 0 ? '' : ${selected.value.length} record${selected.value.length > 1 ? 's' : ''} selected of ${this.customers.length}
-
-      // this.isCustomerSelected = true
-      // console.log(selected.value[0].email)
-      // console.log(this.isCustomerSelected)
     },
 
     deleteCustomer() {
