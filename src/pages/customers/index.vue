@@ -25,6 +25,9 @@
 import CustomerListing from 'src/components/CustomerListing.vue';
 import CustomerForm from 'src/components/CustomerForm.vue';
 import { useResource } from "../../composables/resources.js"
+import { useAuthStore } from 'src/stores/auth.js';
+import { useQuasar } from 'quasar'
+
 
 
 
@@ -39,32 +42,57 @@ export default {
     return {
       dialogVisible: false,
       customers: useResource('customer'),
-      items: []
+      items: [],
+      postData: {},
+      auth: useAuthStore(),
+      q: useQuasar(),
+
     }
   },
 
   methods: {
     onSubmit() {
-      this.customers.unshift(
-        {
-          name: this.$refs.CustomerForm.lastName + ' ' + this.$refs.CustomerForm.firstName,
+      // console.log(this.$refs.CustomerForm.status.id)
+      this.postData = {
+        ... {
+          lastName: this.$refs.CustomerForm.lastName,
+          firstName: this.$refs.CustomerForm.firstName,
           email: this.$refs.CustomerForm.email,
-          customerCompanyName: this.$refs.CustomerForm.customerCompanyName,
-          post: this.$refs.CustomerForm.post,
+          name: this.$refs.CustomerForm.name,
+          job: this.$refs.CustomerForm.job,
           address: this.$refs.CustomerForm.address,
           city: this.$refs.CustomerForm.city,
           zipCode: this.$refs.CustomerForm.zipCode,
-          phone: this.$refs.CustomerForm.phone
+          country: this.$refs.CustomerForm.country,
+          phone: this.$refs.CustomerForm.phone,
+          status: this.$refs.CustomerForm.status.id,
+          company: this.auth.me.company,
+          user: this.auth.me.email
 
         }
-      )
+      }
+      this.customers.create(JSON.stringify(this.postData)).then((res) => {
+        console.log(res)
+        window.location.reload();
+        this.q.notify({
+          position: "top",
+          type: "positive",
+          message: `Le projet a bien été créé`,
+          timeout: 3000
+        })
+      }).catch(() => {
+        this.q.notify({
+          position: "top",
+          type: "negative",
+          message: `Erreur lors de la création du projet`,
+        });
+      })
     },
 
     getCustomers() {
       this.customers.list()
         .then(response => {
           this.items = response.data
-          // console.log(this.items[0])
         })
         .catch(error => {
           console.log(error);

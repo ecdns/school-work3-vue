@@ -2,7 +2,7 @@
   <q-page class="fit">
     <q-card class="q-ma-md">
       <q-card-section>
-        <div class="text-h6">Jhon Doe</div>
+        <div class="text-h6">{{ headerFirstName }} {{ headerLastName }}</div>
         <div class="text-subtitle2">Manager, Carrefour</div>
 
       </q-card-section>
@@ -17,7 +17,7 @@
 
       <q-tab-panels v-model="tab" animated class="bg-white text-black">
         <q-tab-panel name="details">
-          <CustomerDetailForm />
+          <CustomerDetailForm @loadHeader="setHeader($event)" />
         </q-tab-panel>
 
         <q-tab-panel name="action">
@@ -60,7 +60,24 @@ export default {
       projectId
     };
   },
-  components: { CustomerDetailForm, CustomerAction, CustomerProject, CustomerBill, CustomerFiles }
+
+  data() {
+    return {
+      headerFirstName: "",
+      headerLastName: "doe"
+    }
+  },
+  methods: {
+    setHeader(event) {
+      this.headerFirstName = event.split(',')[0]
+      this.headerLastName = event.split(',')[1]
+    },
+  },
+  components: { CustomerDetailForm, CustomerAction, CustomerProject, CustomerBill, CustomerFiles },
+
+  mounted() {
+    // this.setHeader($event)
+  }
 }
 
 </script>

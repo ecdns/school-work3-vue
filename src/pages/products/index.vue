@@ -30,12 +30,14 @@
 <script>
 import ProductList from '../../components/ProductList.vue'
 import ProductCreateForm from 'src/components/ProductCreateForm.vue';
+import { useResource } from '../../composables/resources.js'
 export default {
   components: { ProductList, ProductCreateForm, },
 
   data() {
     return {
       dialogVisible: false,
+      productss: useResource('product'),
       products: [
         {
           id: 1,
@@ -70,6 +72,10 @@ export default {
   },
 
   methods: {
+
+    getProducts() {
+      this.productss.list().then((res) => console.log(res))
+    },
     onSubmit() {
       this.products.unshift(
         {
