@@ -121,16 +121,14 @@ export default {
           this.copyItem = {
             ...this.item
           }
-          this.$emit('loadHeader', `${this.item.firstName}, ${this.item.lastName} `)
+          this.$emit('loadHeader', `${this.item.firstName}, ${this.item.lastName},${this.item.job}, ${this.item.name}  `)
         })
         .catch((err) => {
           console.log(err)
         })
     },
 
-    test() {
-      this.$emit('loadHeader', "hoy")
-    }
+
   },
   created() {
     this.getOneCustomer();

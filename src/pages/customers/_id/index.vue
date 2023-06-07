@@ -3,7 +3,7 @@
     <q-card class="q-ma-md">
       <q-card-section>
         <div class="text-h6">{{ headerFirstName }} {{ headerLastName }}</div>
-        <div class="text-subtitle2">Manager, Carrefour</div>
+        <div class="text-subtitle2"> {{ headerJob }}, {{ headerCompany }}</div>
 
       </q-card-section>
       <q-tabs v-model="tab" dense class="bg-grey-3 text-grey-7" active-color="primary" indicator-color="purple"
@@ -64,19 +64,22 @@ export default {
   data() {
     return {
       headerFirstName: "",
-      headerLastName: "doe"
+      headerLastName: "",
+      headerJob: "",
+      headerCompany: ""
     }
   },
   methods: {
     setHeader(event) {
       this.headerFirstName = event.split(',')[0]
       this.headerLastName = event.split(',')[1]
+      this.headerJob = event.split(',')[2]
+      this.headerCompany = event.split(',')[3]
     },
   },
   components: { CustomerDetailForm, CustomerAction, CustomerProject, CustomerBill, CustomerFiles },
 
   mounted() {
-    // this.setHeader($event)
   }
 }
 
