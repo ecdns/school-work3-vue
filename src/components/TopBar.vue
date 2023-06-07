@@ -5,7 +5,7 @@
                 Communica
             </q-toolbar-title>
 
-            <q-btn icon="settings" color="black">
+            <q-btn icon="settings" color="#244F7D">
                 <q-menu>
                     <div class="row no-wrap q-pa-md">
                         <div class="column">
