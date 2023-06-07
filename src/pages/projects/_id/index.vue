@@ -2,8 +2,8 @@
     <q-page class="fit">
         <q-card class="q-ma-md">
             <q-card-section>
-                <div class="text-h6">Our Changing Planet</div>
-                <div class="text-subtitle2">by John Doe</div>
+                <div class="text-h6">{{ project.name }}</div>
+                <div class="text-subtitle2">{{ project.description }}</div>
             </q-card-section>
             <q-tabs v-model="tab" dense class="bg-grey-3 text-grey-7" active-color="primary" indicator-color="purple"
                 align="justify">
@@ -47,8 +47,8 @@
                 </q-tab-panel>
 
                 <q-tab-panel name="bill">
-                    <div class="text-h6">Exporter une facture</div>
-                    <q-btn class="submit_button" outlined ripple label="Exporter" color="primary" @click="exportPdf()" />
+                    <div class="text-h6">Ma liste de factures</div>
+                    <invoice-list :invoices="items" />
                 </q-tab-panel>
 
                 <q-tab-panel name="documents">
@@ -72,19 +72,24 @@ import { useRoute } from 'vue-router';
 import { useResource } from 'src/composables/resources';
 import useQuasar from 'quasar/src/composables/use-quasar';
 import jsPDF from 'jspdf';
+import InvoiceList from 'src/components/InvoiceList.vue';
 
 export default {
+    components: {
+        InvoiceList
+    },
     setup() {
-        const projects = useResource("project")
+        const projects = useResource("project");
+        const invoices = useResource("invoice")
         const route = useRoute();
         const projectId = ref(route.params.id);
         const q = useQuasar();
-
         return {
             tab: ref("details"),
             route,
             projectId,
             projects,
+            invoices,
             q
         };
     },
@@ -97,13 +102,17 @@ export default {
             readOnlyData: true,
             updateDataIcon: "lock",
             file: ref(null),
-            files: ref(null)
-        }
+            files: ref(null),
+            items: []
+        };
     },
     methods: {
         reloadData() {
             this.projects.get(this.route.params.id).then((res) => {
-                this.project = res
+                this.project = res;
+            });
+            this.invoices.list().then((res) => {
+                this.items = res.data
             })
         },
         onSubmit() {
@@ -119,7 +128,7 @@ export default {
                     type: "negative",
                     message: `Erreur lors de la modification du projet`,
                 });
-            })
+            });
         },
         areDataUpdated() {
             if (this.lastName !== "Jhon") {
@@ -129,14 +138,14 @@ export default {
         },
         UpdateProject() {
             this.readOnlyData = !this.readOnlyData,
-                this.readOnlyData ? this.updateDataIcon = "lock" : this.updateDataIcon = "lock_open"
+                this.readOnlyData ? this.updateDataIcon = "lock" : this.updateDataIcon = "lock_open";
         },
         exportToPDF() {
             const doc = new jsPDF();
-            doc.text('Contenu du PDF', 10, 10);
-            doc.save('mon-fichier.pdf');
+            doc.text("Contenu du PDF", 10, 10);
+            doc.save("mon-fichier.pdf");
         },
-    }
+    },
 }
 
 </script>

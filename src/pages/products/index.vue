@@ -1,42 +1,43 @@
 <template>
   <q-page>
-      <div class="q-pt-lg q-px-lg row justify-between">
-    <div class="text-h6">Produit/service ({{ products.length }})</div>
+    <div class="q-pt-lg q-px-lg row justify-between">
+      <div class="text-h6">Produit/service ({{ products.length }})</div>
 
-    <q-btn class="col-2 " push outline rounded color="primary" icon="add" label="NOUVEAU PRODUIT"
-      @click="dialogVisible = true">
-    </q-btn>
-  </div>
-  <q-dialog v-model="dialogVisible" position="absolute" transition-show="slide-down" transition-hide="slide-up"
-    class="flex flex-center column">
-    <q-card style="min-width: 60vw">
-      <q-card-section>
-        <q-form action="" method="post" @submit.prevent.stop="onSubmit">
-          <div class="row flex justify-end"> <q-icon v-close-popup name="close" size="1.5rem" style="cursor:pointer" />
-          </div>
+      <q-btn class="col-2 " push outline rounded color="primary" icon="add" label="NOUVEAU PRODUIT"
+        @click="dialogVisible = true">
+      </q-btn>
+    </div>
+    <q-dialog v-model="dialogVisible" position="absolute" transition-show="slide-down" transition-hide="slide-up"
+      class="flex flex-center column">
+      <q-card style="min-width: 60vw">
+        <q-card-section>
+          <q-form action="" method="post" @submit.prevent.stop="onSubmit">
+            <div class="row flex justify-end"> <q-icon v-close-popup name="close" size="1.5rem" style="cursor:pointer" />
+            </div>
 
-          <p class="text-h6">Nouveau produit </p>
-          <q-separator color="primary" class="q-my-md" />
-          <ProductCreateForm ref="ProductCreateForm" />
-        </q-form>
-      </q-card-section>
-    </q-card>
-  </q-dialog>
-  <ProductList :products="products" />
+            <p class="text-h6">Nouveau produit </p>
+            <q-separator color="primary" class="q-my-md" />
+            <ProductCreateForm ref="ProductCreateForm" />
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <ProductList :products="products" />
   </q-page>
-
 </template>
 
 
 <script>
 import ProductList from '../../components/ProductList.vue'
 import ProductCreateForm from 'src/components/ProductCreateForm.vue';
+import { useResource } from '../../composables/resources.js'
 export default {
   components: { ProductList, ProductCreateForm, },
 
   data() {
     return {
       dialogVisible: false,
+      productss: useResource('product'),
       products: [
         {
           id: 1,
@@ -71,8 +72,11 @@ export default {
   },
 
   methods: {
+
+    getProducts() {
+      this.productss.list().then((res) => console.log(res))
+    },
     onSubmit() {
-      console.log("button clicked")
       this.products.unshift(
         {
           id: 4,

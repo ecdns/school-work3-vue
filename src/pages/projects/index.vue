@@ -3,7 +3,7 @@
         <SearchBar :data="items" />
         <q-btn icon="add" color="primary" label="Nouveau projet" @click="router.push('/projects/create')" />
     </div>
-    <q-form @submit="projectsFilter" class="q-gutter-md" ref="form" greedy>
+    <q-form @submit="projectsFilter(val)" class="q-gutter-md" greedy>
         <div class="q-ma-md">
             <q-checkbox v-model="ended" val="6" label="Terminé" color="teal" />
             <q-checkbox v-model="inprogress" val="7" label="En cours" color="orange" />
@@ -56,11 +56,10 @@ export default {
         reloadData() {
             this.projects.list().then((res) => {
                 this.items = res.data
-                console.log(this.items)
             })
         },
-        projectsFilter() {
-
+        projectsFilter(val) {
+            console.log(val)
         }
     }
 }
