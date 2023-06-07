@@ -52,7 +52,6 @@ export default {
 
   methods: {
     onSubmit() {
-      // console.log(this.$refs.CustomerForm.status.id)
       this.postData = {
         ... {
           lastName: this.$refs.CustomerForm.lastName,
@@ -68,17 +67,15 @@ export default {
           status: this.$refs.CustomerForm.status.id,
           company: this.auth.me.company,
           user: this.auth.me.email
-
         }
       }
       this.customers.create(JSON.stringify(this.postData)).then((res) => {
-        console.log(res)
         window.location.reload();
         this.q.notify({
           position: "top",
           type: "positive",
-          message: `Le projet a bien été créé`,
-          timeout: 3000
+          message: `Le client a bien été créé`,
+          timeout: 3500
         })
       }).catch(() => {
         this.q.notify({
@@ -93,6 +90,16 @@ export default {
       this.customers.list()
         .then(response => {
           this.items = response.data
+          this.items.forEach(customer => {
+            if (customer.status.name === "Client") {
+              customer.backgroundColor = "#DDFFBC"
+            } else if (customer.status.name === "Prospect") {
+              customer.backgroundColor = "#FFF4D2"
+            } else {
+              customer.backgroundColor = "#DDDDDD"
+            }
+          })
+          // console.log(this.items[1].status.name === "Client")
         })
         .catch(error => {
           console.log(error);
