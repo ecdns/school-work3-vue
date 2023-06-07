@@ -96,9 +96,6 @@ export default {
             visible: false
         }
     },
-    created() {
-        console.log(this.visible)
-    },
     methods: {
         getTotalPrice(products) {
             products.forEach(product => {
