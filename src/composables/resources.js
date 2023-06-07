@@ -27,6 +27,30 @@ export const useResource = (resource) => {
         }, reject);
       });
     },
+    listWithoutAll(page, filters) {
+      page = page || 1;
+      filters = filters || {};
+      const query = {
+        page: page,
+        ...filters,
+      };
+
+      return new Promise((resolve, reject) => {
+        const request = useDeferredAPIRequest();
+        request.execute(`/${resource}`, {
+          // params: query,
+          headers: {
+            'Authorization': `Bearer ${LocalStorage.getItem('token')}`
+          }
+        });
+        request.then(({ data, error }) => {
+          if (error.value) reject(error.value);
+          resolve({
+            data: data.value,
+          });
+        }, reject);
+      });
+    },
     child(id, subresource) {
       return new Promise((resolve, reject) => {
         const request = useDeferredAPIRequest();
