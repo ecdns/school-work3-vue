@@ -31,8 +31,8 @@
             </q-btn>
         </q-toolbar>
     </q-header>
-    <q-drawer v-model="drawer" show-if-above :mini="miniState" @mouseover="miniState = false" @mouseout="miniState = true"
-        :width="300" :breakpoint="500" bordered class="bg-grey-3">
+    <q-drawer v-model="drawer" show-if-above :mini="isminiState()" @mouseover="miniState = false"
+        @mouseout="miniState = true" :width="300" :breakpoint="10" bordered class="bg-grey-3">
         <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
             <q-list>
                 <q-item clickable style="width: 100%;">
@@ -65,6 +65,7 @@
 
 import { ref } from 'vue';
 import { useAuthStore } from 'src/stores/auth';
+import { Screen } from 'quasar';
 
 const linksList = [
     {
@@ -111,6 +112,22 @@ export default {
             miniState: ref(true)
         };
     },
+    methods: {
+        isminiState() {
+            switch (Screen.name) {
+                case 'xs':
+                    return true;
+                case 'sm':
+                    return true;
+                case 'md':
+                    return true;
+                case 'lg':
+                    return this.miniState;
+                case 'xl':
+                    return this.miniState;
+            }
+        }
+    }
 }
 
 </script>
