@@ -4,9 +4,18 @@
             <div class="row flex flex-center">
                 <div class="col-10 ">
                     <div class="row justify-around q-my-sm">
-                        <q-input outlined v-model="project.name" name="name" label="Nom" class=" input col-5" />
+                        <q-input outlined v-model="project.name" name="name" label="Nom" class=" input col-5"
+                            :aria-required="true" lazy-rules :rules="[
+                                (val) =>
+                                    (val !== null && val !== '') || 'Veuillez entrer un nom',
+                            ]" />
                         <q-input outlined v-model="project.description" name="description" label="Description"
-                            class=" input col-5" />
+                            class=" input col-5" :aria-required="true" lazy-rules :rules="[
+                                (val) =>
+                                    val !== null ||
+                                    val !== '' ||
+                                    'Veuillez entrer une description'
+                            ]" />
                     </div>
                     <div class="row justify-around q-my-sm">
                         <q-input disable outlined v-model="project.company" name="company" label="Entreprise"
@@ -17,12 +26,22 @@
                     <div class="row justify-around q-my-sm">
                         <div class="q-gutter-md row items-start">
                             <q-select filled v-model="project.customer" use-chips label="Choisir un client"
-                                :options="customerList" style="width: 250px" option-label="email" option-value="id">
+                                :options="customerList" style="width: 250px" option-label="email" option-value="id"
+                                lazy-rules :rules="[
+                                    (val) =>
+                                        (val !== null && val !== '') ||
+                                        'Veuillez sélectionner un client',
+                                ]">
                             </q-select>
                         </div>
                         <div class="q-gutter-md row items-start">
                             <q-select filled v-model="project.projectStatus" use-chips label="Choisir un statut"
-                                :options="statusList" style="width: 250px" option-label="name" option-value="id">
+                                :options="statusList" style="width: 250px" option-label="name" option-value="id" lazy-rules
+                                :rules="[
+                                    (val) =>
+                                        (val !== null && val !== '') ||
+                                        'Veuillez sélectionner un statut',
+                                ]">
                             </q-select>
                         </div>
                     </div>
@@ -91,23 +110,34 @@ export default {
             this.project.creator = this.auth.me.firstName;
         },
         onSubmit() {
-            this.project.creator = this.auth.me.id;
-            this.project.company = this.auth.me.company;
-            this.project.customer = this.project.customer.id;
-            this.project.projectStatus = this.project.projectStatus.id;
-            this.projects.create(this.project).then((res) => {
-                this.q.notify({
-                    position: "top",
-                    type: "positive",
-                    message: `Le projet a bien été créé`,
-                });
-            }).catch((e) => {
+            if (this.project.name && this.project.description && this.project.customer && this.project.projectStatus) {
+                this.project.creator = this.auth.me.id;
+                this.project.company = this.auth.me.company;
+                this.project.customer = this.project.customer.id;
+                this.project.projectStatus = this.project.projectStatus.id;
+                this.projects.create(this.project).then(() => {
+                    window.location.reload();
+                    this.q.notify({
+                        position: "top",
+                        type: "positive",
+                        message: `Le projet a bien été créé`,
+                        timeout: 3000
+                    });
+                }).catch(() => {
+                    this.q.notify({
+                        position: "top",
+                        type: "negative",
+                        message: `Erreur lors de la création du projet`,
+                    });
+                })
+            } else {
                 this.q.notify({
                     position: "top",
                     type: "negative",
-                    message: `Erreur lors de la création du projet`,
-                });
-            })
+                    message: "Il manque des champs à remplir "
+                })
+                return
+            }
         }
     }
 }

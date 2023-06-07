@@ -1,4 +1,4 @@
-import { createRouterLayout } from "vue-router-layout";
+import { useResource } from "src/composables/resources";
 import { useAuthStore } from "src/stores/auth";
 
 const ifAuthenticated = (to, from, next) => {
@@ -21,6 +21,13 @@ const redirectIfAuthenticated = (to, from, next) => {
   }
   next();
 };
+
+const redirectIfNoProject = () => {
+  const projects = useResource('project')
+  projects.list().then((res) => {
+    if (res.data.length <= 0) next("/projects")
+  })
+}
 
 const routes = [
   {
@@ -52,7 +59,8 @@ const routes = [
           },
           {
             path: ':id',
-            component: () => import('pages/projects/_id/index.vue')
+            component: () => import('pages/projects/_id/index.vue'),
+            beforeEnter: redirectIfNoProject
           }
         ]
       },
