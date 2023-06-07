@@ -35,7 +35,6 @@ export default {
           format: val => `${val}`,
           sortable: true
         },
-        { name: 'reference', align: 'center', label: "Référence", field: 'reference', sortable: true },
         { name: 'supplier', label: 'Fournisseur', field: 'supplier' },
         { name: 'quantity', align: 'center', label: 'Quantité', field: 'quantity', sortable: true },
         { name: 'quantityUnit', align: 'center', label: 'Unité', field: 'quantityUnit', sortable: true },
