@@ -2,7 +2,7 @@
   "name": "quasar-app",
   "version": "0.0.1",
   "description": "A Quasar Project",
-  "productName": "CRM",
+  "productName": "Comunica - Production System",
   "author": "ecdns <clementpavot78@gmail.com>",
   "private": true,
   "scripts": {
