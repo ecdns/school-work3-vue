@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="q-pt-lg q-px-lg row justify-between">
-      <div class="text-h6" @click="getProducts">Produit/service ({{ products.length }})</div>
+      <div class="text-h6">Produit/service ({{ products.length }})</div>
 
       <q-btn class="col-2 " push outline rounded color="primary" icon="add" label="NOUVEAU PRODUIT"
         @click="dialogVisible = true">
@@ -77,7 +77,6 @@ export default {
       this.productss.list().then((res) => console.log(res))
     },
     onSubmit() {
-      console.log("button clicked")
       this.products.unshift(
         {
           id: 4,
