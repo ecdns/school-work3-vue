@@ -49,6 +49,10 @@ export default {
   methods: {
     updateChartOptions() {
       this.chartOptions = {
+        title: {
+          text: 'Stock par Famille de Produit',
+          align: 'center'
+        },
         labels: this.productFamilyList,
         chart: {
           type: 'donut',
