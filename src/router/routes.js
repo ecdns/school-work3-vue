@@ -113,7 +113,17 @@ const routes = [
       {
         path: 'admin',
         component: () => import('pages/Admin.vue'),
-        beforeEnter: ifAuthenticated
+        beforeEnter: ifAuthenticated,
+        children: [
+          {
+            path: '',
+            component: () => import('pages/admin/index.vue')
+          },
+          {
+            path: 'users/:id',
+            component: () => import('pages/admin/_id/index.vue')
+          }
+        ]
       },
       {
         path: '/:catchAll(.*)*',
