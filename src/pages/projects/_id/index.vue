@@ -14,31 +14,28 @@
 
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="details">
-          <q-form action="" method="post" @submit.prevent.stop="onSubmit">
-            <q-icon @click="UpdateProject" :name="updateDataIcon" size="2em" color="primary" class="q-ml-lg"></q-icon>
+          <q-form @submit.prevent.stop="onSubmit">
             <div class="row flex flex-center">
               <div class="col-10 ">
                 <div class="row justify-around q-my-sm">
-                  <q-input outlined :readonly="readOnlyData" v-model="project.name" name="name" label="Nom"
-                    class=" input col-5" />
-                  <q-input outlined :readonly="readOnlyData" v-model="project.description" name="description"
-                    label="Description" class=" input col-5" />
-                </div>
-                <div class="row justify-around q-my-sm">
-                  <q-input outlined :readonly="readOnlyData" v-model="project.company_id" name="company"
-                    label="Entreprise" class=" input col-5" />
-                  <q-input outlined :readonly="readOnlyData" v-model="project.creator_id" name="creator" label="Créateur"
+                  <q-input outlined v-model="project.name" name="name" label="Nom" class=" input col-5" />
+                  <q-input outlined v-model="project.description" name="description" label="Description"
                     class=" input col-5" />
                 </div>
                 <div class="row justify-around q-my-sm">
-                  <q-input outlined :readonly="readOnlyData" v-model="project.customer_id" name="client" label="Client"
+                  <q-input :disable="true" outlined :v-model="auth.me.company" name="company" label="Entreprise"
                     class=" input col-5" />
-                  <q-input outlined :readonly="readOnlyData" v-model="project.project_status" name="status" label="Statut"
+                  <q-input :disable="true" outlined v-model="auth.me.firstName" name="creator" label="Créateur"
                     class=" input col-5" />
+                </div>
+                <div class="row justify-around q-my-sm">
+                  <q-select filled v-model="project.customer" :options="customersList" option-label="name"
+                    label="Client" />
+                  <q-select filled v-model="project.projectStatus" :options="statusList" option-label="name"
+                    label="Statut" />
                 </div>
                 <div class="flex flex-center q-py-md">
-                  <q-btn class="" outlined ripple label="Mettre à jour" :disable="!areDataUpdated" type="submit"
-                    color="primary" />
+                  <q-btn class="" outlined ripple label="Mettre à jour" type="submit" color="primary" />
                 </div>
               </div>
             </div>
@@ -71,6 +68,7 @@ import { useResource } from 'src/composables/resources';
 import useQuasar from 'quasar/src/composables/use-quasar';
 // import jsPDF from 'jspdf';
 import InvoiceList from 'src/components/InvoiceList.vue';
+import { useAuthStore } from 'src/stores/auth';
 
 export default {
   components: {
@@ -78,17 +76,26 @@ export default {
   },
   setup() {
     const projects = useResource("project");
-    const invoices = useResource("invoice")
+    const invoices = useResource("invoice");
+    const customers = useResource("customer")
+    const companies = useResource("company");
+    const status = useResource("projectStatus");
     const route = useRoute();
     const projectId = ref(route.params.id);
     const q = useQuasar();
+    const auth = useAuthStore();
+
     return {
       tab: ref("details"),
       route,
       projectId,
       projects,
       invoices,
-      q
+      customers,
+      companies,
+      status,
+      q,
+      auth
     };
   },
   created() {
@@ -101,82 +108,55 @@ export default {
       updateDataIcon: "lock",
       file: ref(null),
       files: ref(null),
-      items: []
+      items: [],
+      statusList: [],
+      customersList: []
     };
   },
+
   methods: {
     reloadData() {
+      this.status.list().then((res) => {
+        this.statusList = res.data
+      })
+      this.customers.list().then((res) => {
+        this.customersList = res.data
+      })
       this.projects.get(this.route.params.id).then((res) => {
-        this.project = res;
+        this.project = res
+        this.project.name = res.name;
+        this.project.description = res.description;
+        this.project.customer = res.customer;
+        this.project.projectStatus = res.projectStatus;
       });
-      this.invoices.list().then((res) => {
+      this.invoices.listWithoutAll().then((res) => {
         this.items = res.data
       })
     },
-    setup() {
-      const projects = useResource("project");
-      const route = useRoute();
-      const invoices = useResource("invoice/project/" + route.params.id)
-      const projectId = ref(route.params.id);
-      const q = useQuasar();
-      return {
-        tab: ref("details"),
-        route,
-        projectId,
-        projects,
-        invoices,
-        q
-      };
-    },
-    areDataUpdated() {
-      if (this.lastName !== "Jhon") {
-        return true;
-      }
-      return false;
-    },
-    UpdateProject() {
-      this.readOnlyData = !this.readOnlyData,
-        this.readOnlyData ? this.updateDataIcon = "lock" : this.updateDataIcon = "lock_open";
-    },
-    methods: {
-      reloadData() {
-        this.projects.get(this.route.params.id).then((res) => {
-          this.project = res;
+    onSubmit() {
+      this.project.customer = this.project.customer.id
+      this.project.projectStatus = this.project.projectStatus.id
+      this.project.company = this.project.company.id
+      this.project.creator = this.auth.me.id
+      this.projects.update(this.route.params.id, this.project).then(() => {
+        this.q.notify({
+          position: "top",
+          type: "positive",
+          message: `Le projet a bien été modifié`,
         });
-        this.invoices.listWithoutAll().then((res) => {
-          this.items = res.data
-        })
-      },
-      onSubmit() {
-        this.projects.update(this.route.params.id, this.project).then((res) => {
-          this.q.notify({
-            position: "top",
-            type: "positive",
-            message: `Le projet a bien été modifié`,
-          });
-        }).catch(() => {
-          this.q.notify({
-            position: "top",
-            type: "negative",
-            message: `Erreur lors de la modification du projet`,
-          });
+        this.reloadData();
+      }).catch(() => {
+        this.q.notify({
+          position: "top",
+          type: "negative",
+          message: `Erreur lors de la modification du projet`,
         });
-      },
-      areDataUpdated() {
-        if (this.lastName !== "Jhon") {
-          return true;
-        }
-        return false;
-      },
-      UpdateProject() {
-        this.readOnlyData = !this.readOnlyData,
-          this.readOnlyData ? this.updateDataIcon = "lock" : this.updateDataIcon = "lock_open";
-      },
-      exportToPDF() {
-        const doc = new jsPDF();
-        doc.text("Contenu du PDF", 10, 10);
-        doc.save("mon-fichier.pdf");
-      },
+      });
+    },
+    exportToPDF() {
+      const doc = new jsPDF();
+      doc.text("Contenu du PDF", 10, 10);
+      doc.save("mon-fichier.pdf");
     },
   },
 }

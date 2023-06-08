@@ -128,26 +128,7 @@ export const useResource = (resource) => {
           resolve(data.value);
         });
       });
-    },
-    executeCustom(method, payload) {
-      return new Promise((resolve, reject) => {
-        const request = useDeferredAPIRequest();
-        request.execute(`/${resource}`, {
-          method: method,
-          data: payload,
-          headers: {
-            "Content-Type":  "application/json",
-            'Authorization': `Bearer ${LocalStorage.getItem('token')}`
-          }
-        });
-        request.then(({ data, error }) => {
-          if (error.value) reject(error.value);
-          resolve({
-            data: data.value,
-          });
-        }, reject);
-      });
-    },
+    }
   };
 };
 

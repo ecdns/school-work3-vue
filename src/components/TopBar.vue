@@ -8,18 +8,20 @@
       <q-btn icon="settings" color="#244F7D">
         <q-menu fit>
           <div class="row no-wrap q-pa-md">
-<!--            <div class="column">
+            <!--            <div class="column">
               <div class="text-h6 q-mb-md">Settings</div>
               <q-toggle v-model="mobileData" label="Use Mobile Data" />
               <q-toggle v-model="bluetooth" label="Bluetooth" />
             </div>-->
 
-<!--            <q-separator vertical inset class="q-mx-lg" />-->
+            <!--            <q-separator vertical inset class="q-mx-lg" />-->
 
             <div class="column items-center">
-              <q-avatar :style="{ 'background-color': colorBackground }" text-color="white" size="60px">{{ auth.me.firstName.substring(0, 1) }}{{ auth.me.lastName.substring(0, 1) }}</q-avatar>
+              <q-avatar :style="{ 'background-color': colorBackground }" text-color="white" size="60px">{{
+                auth.me.firstName.substring(0, 1) }}{{ auth.me.lastName.substring(0, 1) }}</q-avatar>
 
-              <div style="width: 150px;" class="text-subtitle1 q-mt-md q-mb-xs text-center">{{ auth.me.firstName }} {{ auth.me.lastName }}</div>
+              <div style="width: 150px;" class="text-subtitle1 q-mt-md q-mb-xs text-center">{{ auth.me.firstName }} {{
+                auth.me.lastName }}</div>
 
               <q-btn @click="auth.logout()" color="primary" label="Logout" push size="sm" v-close-popup />
             </div>
@@ -29,26 +31,19 @@
     </q-toolbar>
   </q-header>
 
-  <q-drawer
-    v-model="drawer"
-    show-if-above
-    :mini="isMiniState()"
-    @mouseover="miniState = false"
-    @mouseout="miniState = true"
-    :width="300"
-    :breakpoint="10"
-    bordered
-    class="bg-grey-3"
-    content-class="column justify-between no-wrap"
-  >
+  <q-drawer v-model="drawer" show-if-above :mini="isMiniState()" @mouseover="miniState = false"
+    @mouseout="miniState = true" :width="300" :breakpoint="10" bordered class="bg-grey-3"
+    content-class="column justify-between no-wrap">
     <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
       <q-list>
         <q-item clickable style="width: 100%;">
           <q-item-section avatar>
-            <q-avatar :style="{ 'background-color': colorBackground }" text-color="white" size="45px">{{ auth.me.firstName.substring(0, 1) }}{{ auth.me.lastName.substring(0, 1) }}</q-avatar>
+            <q-avatar :style="{ 'background-color': colorBackground }" text-color="white" size="45px">{{
+              auth.me.firstName.substring(0, 1) }}{{ auth.me.lastName.substring(0, 1) }}</q-avatar>
           </q-item-section>
           <q-item-section>
-            <q-item-label style="font-weight: bold;" class="text-h6" >{{ auth.me.firstName }} {{ auth.me.lastName }}</q-item-label>
+            <q-item-label style="font-weight: bold;" class="text-h6">{{ auth.me.firstName }} {{ auth.me.lastName
+            }}</q-item-label>
           </q-item-section>
         </q-item>
         <q-separator black />
@@ -64,17 +59,17 @@
       </q-list>
 
       <div class="absolute-bottom">
-<!--       Afficher une image différente entre le menu déplié et réctracté           -->
+        <!--       Afficher une image différente entre le menu déplié et réctracté           -->
         <q-item clickable>
           <q-item-section avatar>
-<!--            image 1 -->
+            <!--            image 1 -->
             <q-avatar size="50px">
               <img src="/src/assets/comunicaLogo.png">
             </q-avatar>
 
           </q-item-section>
           <q-item-section>
-<!--            Image 2-->
+            <!--            Image 2-->
             <q-img src="/src/assets/comunicaTexte.png" size="50px">
               <img src="">
             </q-img>
@@ -84,7 +79,6 @@
       </div>
     </q-scroll-area>
   </q-drawer>
-
 </template>
 
 <script>
@@ -168,9 +162,10 @@ export default {
     function isMiniState() {
       switch (Screen.name) {
         case 'xs':
-        case 'sm':
-        case 'md':
           return true;
+        case 'sm':
+          return true;
+        case 'md':
         case 'lg':
         case 'xl':
           return miniState.value;
