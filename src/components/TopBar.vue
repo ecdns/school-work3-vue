@@ -138,7 +138,6 @@ export default {
 
     const colorBackground = stringToHexColor(auth.me.firstName + auth.me.lastName);
 
-    console.log(colorBackground);
 
     const company = ref("Chargement...");
 
@@ -154,7 +153,6 @@ export default {
       try {
         const companyResource = useResource('company');
         const data = await companyResource.get(auth.me.company);
-        console.log(data);
         company.value = data.name;
       } catch (error) {
         console.error('Erreur lors de la récupération des données de la société:', error);

@@ -99,7 +99,6 @@ export default {
               customer.backgroundColor = "#DDDDDD"
             }
           })
-          // console.log(this.items[1].status.name === "Client")
         })
         .catch(error => {
           console.log(error);

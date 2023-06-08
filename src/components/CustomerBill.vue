@@ -1,8 +1,8 @@
 <template>
-  <div class="text-h6">Facture ({{ invoices.length }})</div>
-  <div v-if="invoices.length !== 0">
+  <div class="text-h6">Facture ({{ items.length }})</div>
+  <div v-if="items.length !== 0">
     <div class="q-pa-md">
-      <q-table title="" :rows="invoices" :columns="columns" row-key="name" />
+      <q-table title="" :rows="items" :columns="columns" row-key="name" />
     </div>
   </div>
 
@@ -15,10 +15,20 @@
 </template>
 
 <script>
+import { useResource } from 'src/composables/resources'
+import { useRoute } from 'vue-router'
 export default {
+  setup() {
+    const route = useRoute()
+    const customerId = route.params.id
+    return {
+      route,
+      customerId
+    }
+  },
   data() {
     return {
-
+      invoices: useResource('customer'),
       columns: [
         {
           name: 'reference',
@@ -35,7 +45,7 @@ export default {
 
       ],
 
-      invoices: [
+      items: [
         {
           reference: 'FAC79',
           creation_date: "20-05-2023",
@@ -60,6 +70,16 @@ export default {
 
       ]
     }
+  },
+  methods: {
+    reloadData() {
+      this.invoices.get(this.customerId).then((res) => {
+        console.log(res)
+      })
+    }
+  },
+  created() {
+    this.reloadData();
   }
 }
 </script>

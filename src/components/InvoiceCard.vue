@@ -103,7 +103,7 @@
                         <td></td>
 
                         <td>
-                            Total: {{ getTotalPrice(invoice.invoiceProducts) }}
+                            Total: {{ totalPrice }} €
                         </td>
                     </tr>
                 </table>
@@ -117,49 +117,46 @@
 import { useRoute, useRouter } from 'vue-router';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { useResource } from "src/composables/resources";
+import {ref} from "vue";
 
 export default {
-    props: {
-        invoice: Object,
-    },
-    setup() {
-        const route = useRoute();
-        const router = useRouter();
+  props: {
+    invoice: Object,
+  },
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const priceResource = useResource('invoice/totalAmountWithVat');
 
-        return { route, router }
-    },
-    data() {
-        return {
-            visible: false,
-            totalPrice: 0,
-        }
-    },
-    methods: {
-        openInvoiceDialog() {
-            this.visible = true;
-        },
-        getTotalPrice(products) {
-            products.forEach(product => {
-                this.totalPrice += product.product.sellPrice;
-                console.log(this.totalPrice)
-            });
-            return this.totalPrice;
-        },
-        exportPDF() {
-            const element = document.getElementById("facture");
+    const totalPrice = ref(null); // Utiliser une référence réactive pour stocker le total
 
-            html2canvas(element).then((canvas) => {
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF();
-                const imgProps = pdf.getImageProperties(imgData);
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    // Récupérer le total de la facture lors de la création du composant
+    priceResource.get(this.invoice.id).then((response) => {
+      totalPrice.value = response.data;
+    });
 
-                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                pdf.save("Facture numéro " + this.invoice.id);
-            });
-        }
-    }
-}
+    return { route, router, totalPrice, priceResource };
+  },
+  methods: {
+    openInvoiceDialog() {
+      this.visible = true;
+    },
+    exportPDF() {
+      const element = document.getElementById("facture");
+
+      html2canvas(element).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save("Facture numéro " + this.invoice.id);
+      });
+    },
+  },
+};
 
 </script>

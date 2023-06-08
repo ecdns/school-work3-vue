@@ -25,7 +25,7 @@
 
       <q-table flat bordered title="Clients" :rows="customers" :columns="columns" row-key="email"
         :selected-rows-label="getSelectedString" selection="multiple" v-model:selected="selected"
-        @row-click="handleRowClick" />
+        @row-click="handleRowClick" rows-per-page-label="Résultats par page" :pagination-label="customPaginationLabel" />
 
 
     </div>
@@ -77,6 +77,12 @@ export default {
       customer: useResource('customer'),
       statusList: [],
       customerStatus: useResource('customerStatus'),
+      pagination: {
+        sortBy: 'column1',
+        descending: false,
+        page: 1,
+        rowsPerPage: 10
+      },
 
       dialogVisible: ref(false),
       confirm: false,
@@ -95,10 +101,14 @@ export default {
       post: '',
     }
   },
+
   methods: {
 
     handleRowClick(_, row) {
       this.router.push(`/customers/${row.id}`)
+    },
+    customPaginationLabel(firstRowIndex, endRowIndex, totalRowsNumber) {
+      return `${firstRowIndex}-${endRowIndex} sur ${totalRowsNumber}`;
     },
 
     updateCustomerStatus() {
