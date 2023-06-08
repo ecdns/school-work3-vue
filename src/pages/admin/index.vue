@@ -1,5 +1,5 @@
 <template>
-    <div class="q-pa-md" style="max-width: 350px">
+    <div class="q-pa-md q-gutter-md flex flex-center q-mx-auto" style="max-width: 350px">
         <q-toolbar class="bg-primary text-white shadow-2">
             <q-toolbar-title>Panneau d'administration</q-toolbar-title>
         </q-toolbar>
