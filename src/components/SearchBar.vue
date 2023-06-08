@@ -1,5 +1,5 @@
 <template>
-    <q-input v-model="search" debounce="1000" filled placeholder="Rechercher" @update:model-value="isSearch = true">
+    <q-input v-model="search" debounce="1000" filled placeholder="Rechercher">
         <template v-slot:append>
             <q-icon name="search" />
         </template>
@@ -24,7 +24,7 @@ export default {
         Contacts
     },
     props: {
-        data: Array
+        data: Array,
     },
     setup() {
         const route = useRoute();

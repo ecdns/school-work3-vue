@@ -80,8 +80,8 @@ export default {
     },
     setup() {
         const projects = useResource("project");
-        const invoices = useResource("invoice")
         const route = useRoute();
+        const invoices = useResource("invoice/project/" + route.params.id)
         const projectId = ref(route.params.id);
         const q = useQuasar();
         return {
@@ -111,7 +111,7 @@ export default {
             this.projects.get(this.route.params.id).then((res) => {
                 this.project = res;
             });
-            this.invoices.list().then((res) => {
+            this.invoices.listWithoutAll().then((res) => {
                 this.items = res.data
             })
         },

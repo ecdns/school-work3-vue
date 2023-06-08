@@ -13,8 +13,10 @@
             <q-btn label="Filtrer" type="submit" color="primary" flat class="q-ml-sm"></q-btn>
         </div>
     </q-form>
+    <q-chip color="primary" text-color="white">
+        Mes projets
+    </q-chip>
     <ProjectList :projects="items" />
-    <q-pagination class="q-mb-md" v-model="current" :max="5" />
 </template>
 
 <script>
@@ -24,6 +26,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import SearchBar from 'src/components/SearchBar.vue';
 import { useResource } from 'src/composables/resources';
+import { useAuthStore } from 'src/stores/auth';
 
 export default {
     components: {
@@ -31,9 +34,11 @@ export default {
         SearchBar
     },
     setup() {
+        const auth = useAuthStore();
         const router = useRouter();
-        const projects = useResource('project');
+        const projects = useResource('project/user/' + auth.me.id);
         return {
+            auth,
             router,
             stopped: ref(false),
             ended: ref(false),
@@ -54,12 +59,15 @@ export default {
     },
     methods: {
         reloadData() {
-            this.projects.list().then((res) => {
+            this.projects.listWithoutAll().then((res) => {
                 this.items = res.data
             })
         },
         projectsFilter(val) {
             console.log(val)
+        },
+        isSearch() {
+            document.querySelector('input')
         }
     }
 }

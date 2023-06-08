@@ -1,5 +1,6 @@
 import { useResource } from "src/composables/resources";
 import { useAuthStore } from "src/stores/auth";
+import { Screen } from "quasar";
 
 const ifAuthenticated = (to, from, next) => {
   const authStore = useAuthStore();
@@ -70,8 +71,12 @@ const routes = [
         beforeEnter: ifAuthenticated,
         children: [
           {
+            path: '',
+            component: () => import('pages/chat/index.vue')
+          },
+          {
             path: ':id',
-            component: () => import('components/Conversation.vue')
+            component: () => import('pages/chat/_id/index.vue')
           }
         ]
       },

@@ -8,7 +8,7 @@
             <q-tab-panel name="contact">
                 <q-list>
                     <q-item v-for="contact in contacts" :key="contact.id" class="q-my-sm" clickable v-ripple
-                        @click="router.push(`/chat/${contact.conversation}`)">
+                        @click="router.push(`/chat/${contact.id}`)">
                         <q-item-section avatar>
                             <!-- <q-avatar v-for="user in contact.users" color="primary" text-color="white">
                                 {{ user.name[0] }}
