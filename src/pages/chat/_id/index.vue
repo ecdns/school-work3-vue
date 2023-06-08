@@ -1,5 +1,6 @@
 <template>
     <q-page style="width: 50%;">
+        <q-icon></q-icon>
         <div class="flex column">
             <q-chip>
                 {{ project.name }}
@@ -68,7 +69,7 @@ export default {
                     color: 'positive',
                     message: 'Message envoyé'
                 })
-                this.reloadData();
+                window.location.reload()
             }).catch(() => {
                 this.q.notify({
                     icon: 'done',

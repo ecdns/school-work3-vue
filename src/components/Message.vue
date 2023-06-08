@@ -38,7 +38,6 @@ export default {
                 this.messages.forEach(element => {
                     console.log(element.message)
                 });
-                console.log(this.messages)
             })
         },
         stringToHexColor(str) {
