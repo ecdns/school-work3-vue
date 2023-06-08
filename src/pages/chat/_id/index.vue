@@ -7,7 +7,8 @@
             </q-chip>
             <Message />
             <q-form>
-                <q-input class="q-ma-lg" filled bottom-slots v-model="message.message" label="Label" :dense="dense">
+                <q-input class="q-ma-lg" filled bottom-slots v-model="message.message" label="Nouveau message ..."
+                    :dense="dense">
                     <template v-slot:before>
                         <q-avatar>
                             {{ auth.me.firstName[0] + auth.me.lastName[0] }}
