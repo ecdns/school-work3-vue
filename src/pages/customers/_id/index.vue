@@ -1,7 +1,7 @@
 <template>
   <q-page class="fit">
     <q-card class="q-ma-md">
-      <q-btn icon="arrow_back" @click="goBack" label="Retour" color="primary" class="q-mb-md" />
+      <q-btn icon="arrow_back" @click="goBack" label="Retour" color="primary" class="q-mx-md" />
 
       <q-card-section>
         <div class="text-h6">{{ headerFirstName }} {{ headerLastName }}</div>
@@ -12,7 +12,7 @@
         align="justify">
         <q-tab name="details" label="Détails" />
         <!-- <q-tab name="action" label="Action" /> -->
-        <q-tab name="project" label="Projet" />
+        <!-- <q-tab name="project" label="Projet" /> -->
         <!-- <q-tab name="bill" label="Facture" /> -->
         <!-- <q-tab name="documents" label="Documents" /> -->
       </q-tabs>
@@ -26,9 +26,9 @@
           <CustomerAction />
         </q-tab-panel> -->
 
-        <q-tab-panel name="project">
+        <!-- <q-tab-panel name="project">
           <CustomerProject />
-        </q-tab-panel>
+        </q-tab-panel> -->
 
         <!-- <q-tab-panel name="bill">
           <CustomerBill />
@@ -46,7 +46,7 @@
 
 import CustomerDetailForm from '../../../components/CustomerDetailForm.vue';
 // import CustomerAction from '../../../components/CustomerAction.vue';
-import CustomerProject from '../../../components/CustomerProject.vue';
+// import CustomerProject from '../../../components/CustomerProject.vue';
 // import CustomerBill from '../../../components/CustomerBill.vue';
 // import CustomerFiles from '../../../components/CustomerFiles.vue';
 import { ref } from 'vue';
@@ -82,7 +82,7 @@ export default {
       this.$router.go(-1);
     },
   },
-  components: { CustomerDetailForm, CustomerProject, },
+  components: { CustomerDetailForm, },
 
 
 }
