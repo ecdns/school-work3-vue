@@ -6,22 +6,20 @@
       </q-toolbar-title>
 
       <q-btn icon="settings" color="#244F7D">
-        <q-menu>
+        <q-menu fit>
           <div class="row no-wrap q-pa-md">
-            <div class="column">
+<!--            <div class="column">
               <div class="text-h6 q-mb-md">Settings</div>
               <q-toggle v-model="mobileData" label="Use Mobile Data" />
               <q-toggle v-model="bluetooth" label="Bluetooth" />
-            </div>
+            </div>-->
 
-            <q-separator vertical inset class="q-mx-lg" />
+<!--            <q-separator vertical inset class="q-mx-lg" />-->
 
             <div class="column items-center">
-              <q-avatar size="72px">
-                <img src="https://cdn.quasar.dev/img/avatar4.jpg">
-              </q-avatar>
+              <q-avatar :style="{ 'background-color': colorBackground }" text-color="white" size="60px">{{ auth.me.firstName.substring(0, 1) }}{{ auth.me.lastName.substring(0, 1) }}</q-avatar>
 
-              <div class="text-subtitle1 q-mt-md q-mb-xs">{{ auth.me.firstName }} {{ auth.me.lastName }}</div>
+              <div style="width: 150px;" class="text-subtitle1 q-mt-md q-mb-xs text-center">{{ auth.me.firstName }} {{ auth.me.lastName }}</div>
 
               <q-btn @click="auth.logout()" color="primary" label="Logout" push size="sm" v-close-popup />
             </div>

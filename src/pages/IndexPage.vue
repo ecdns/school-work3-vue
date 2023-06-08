@@ -1,11 +1,11 @@
 <template>
-  <div class="card-container">
-    <div class="row">
-      <div class="q-pa-md">
-        <div class="q-gutter-xs q-card">
+  <div class="card-container card-containera">
+    <div class="row rowa">
+      <div class="q-pa-md q-pa-mda">
+        <div class="q-gutter-xs q-card q-gutter-xsa q-carda">
           <ApexDonut />
         </div>
-        <div class="q-gutter-xs q-card">
+        <div class="q-gutter-xs q-card q-gutter-xsa q-carda">
           <ApexBar />
         </div>
       </div>
@@ -26,30 +26,30 @@ export default {
 </script>
 
 <style>
-.card-container {
+.card-containera {
   display: flex;
   justify-content: center;
 }
 
-.row {
+.rowa {
   display: flex;
   justify-content: center; /* Ajout pour centrer horizontalement */
 }
 
-.q-pa-md {
+.q-pa-mda {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center; /* Ajout pour centrer verticalement */
 }
 
-.q-gutter-xs {
+.q-gutter-xsa {
   width: 400px;
   margin: 2rem;
   height: 350px;
 }
 
-.q-card {
+.q-carda {
   display: flex;
   justify-content: center;
   align-items: center;
