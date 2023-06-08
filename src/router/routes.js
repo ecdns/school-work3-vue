@@ -133,7 +133,7 @@ const routes = [
           },
           {
             path: 'familyProducts/create',
-            component: () => import('src/pages/admin/familyProducts.vue')
+            component: () => import('src/pages/admin/createProductFamily.vue')
           }
         ]
       },

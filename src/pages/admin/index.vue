@@ -1,6 +1,6 @@
 <template>
-    <div class="q-pa-md" style="max-width: 350px">
-        <q-toolbar class="bg-primary text-white shadow-2">
+    <div class="q-pa-md">
+        <q-toolbar class="bg-primary text-white shadow-2 w-100">
             <q-toolbar-title>Panneau d'administration</q-toolbar-title>
         </q-toolbar>
         <q-btn @click="router.push('admin/users/create')">Ajouter un utilisateur</q-btn>

@@ -31,27 +31,19 @@ export default {
             family: {}
         }
     },
-    created() {
-        this.reloadData();
-    },
     methods: {
-        reloadData() {
-            this.productFamilies.get(this.route.params.id).then((res) => {
-                this.family = res;
-            })
-        },
         onSubmit() {
-            this.productFamilies.update(this.family.id).then(() => {
+            this.productFamilies.create(this.family).then(() => {
                 this.q.notify({
                     icon: 'done',
                     color: 'positive',
-                    message: 'La catégorie a bien été modifié'
+                    message: 'La catégorie a bien été créée'
                 })
             }).catch(() => {
                 this.q.notify({
                     icon: 'done',
                     color: 'negative',
-                    message: 'Erreur lors de la modification de la catégorie'
+                    message: 'Erreur lors de la création de la catégorie'
                 })
             })
         }
