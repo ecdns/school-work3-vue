@@ -33,9 +33,9 @@
                   <q-select class="input col-5" filled v-model="project.projectStatus" :options="statusList" option-label="name"
                     label="Statut" />
                 </div>
-                <div class="flex flex-center q-py-md">
-                  <q-btn class="" outlined ripple label="Mettre à jour" type="submit" color="primary" />
-                  <q-btn class="" outlined ripple label="Retour" type="submit" color="primary" />
+                <div class="flex column flex-center q-py-md">
+                  <q-btn class="q-mb-md" outlined ripple label="Mettre à jour" type="submit" color="primary" />
+                  <q-btn @click="goback" class="q-mb-md" outlined ripple label="Retour" type="button" color="primary" />
                 </div>
               </div>
             </div>
@@ -147,6 +147,9 @@ export default {
       invoiceByProject.listWithoutAll().then((res) => {
         this.items = res.data
       })
+    },
+    goback() {
+      this.$router.go(-1);
     },
     onSubmitInvoice() {
       this.postData = {

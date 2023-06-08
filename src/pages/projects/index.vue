@@ -1,7 +1,7 @@
 <template>
-    <div class="q-pa-md fit flex row justify-center">
+    <div class="q-pa-md flex row justify-center">
         <SearchBar :data="items" />
-        <q-btn icon="add" color="primary" label="Nouveau projet" @click="router.push('/projects/create')" />
+        <q-btn icon="add" class="q-ml-md" color="primary" label="Nouveau projet" @click="router.push('/projects/create')" />
     </div>
     <q-form @submit="projectsFilter(val)" class="q-gutter-md" greedy>
         <div class="q-ma-md">
