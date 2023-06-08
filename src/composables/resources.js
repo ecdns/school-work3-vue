@@ -114,6 +114,21 @@ export const useResource = (resource) => {
         });
       });
     },
+    put() {
+      return new Promise((resolve, reject) => {
+        const request = useDeferredAPIRequest();
+        request.execute(`/${resource}`, {
+          method: "PUT",
+          headers: {
+            'Authorization': `Bearer ${LocalStorage.getItem('token')}`
+          }
+        });
+        request.then(({ data, error }) => {
+          if (error.value) reject(error.value);
+          resolve(data.value);
+        });
+      });
+    },
     delete(id) {
       return new Promise((resolve, reject) => {
         const request = useDeferredAPIRequest();

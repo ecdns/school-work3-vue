@@ -1,6 +1,6 @@
 <template>
     <q-list style="width: -webkit-fill-available;">
-        <InvoiceCard v-for="(invoice, id) in invoices" :invoice="invoice" v-bind:key="id" />
+        <InvoiceCard   v-for="(invoice, id) in invoices" :invoice="invoice" v-bind:key="id" />
     </q-list>
 </template>
 <script>
@@ -17,3 +17,7 @@ export default {
 }
 
 </script>
+
+<style>
+
+</style>
