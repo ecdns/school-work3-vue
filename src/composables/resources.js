@@ -128,7 +128,22 @@ export const useResource = (resource) => {
           resolve(data.value);
         });
       });
-    }
+    },
+    post() {
+      return new Promise((resolve, reject) => {
+        const request = useDeferredAPIRequest();
+        request.execute(`/${resource}`, {
+          method: "POST",
+          headers: {
+            'Authorization' : `Bearer ${LocalStorage.getItem('token')}`
+          },
+        });
+        request.then(({ data, error }) => {
+          if (error.value) reject(error.value);
+          resolve(data.value);
+        }, reject);
+      });
+    },
   };
 };
 

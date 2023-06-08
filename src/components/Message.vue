@@ -1,4 +1,5 @@
 <template>
+  <q-btn @click="goback" label="Retour" class="q-mt-xs" color="primary" />
     <div style="width: 100%;" v-if="messages.length > 0">
         <div v-for="message in messages" :key="message.id">
             <q-chat-message v-if="message.sender.id === auth.me.id" :name="[auth.me.firstName]"
@@ -7,6 +8,7 @@
                 :text="[message.message]" :stamp="[message.createdAt]" />
         </div>
     </div>
+
 </template>
 
 <script>
@@ -39,6 +41,9 @@ export default {
                     console.log(element.message)
                 });
             })
+        },
+        goback() {
+          this.$router.go(-1);
         },
         stringToHexColor(str) {
             let hash = 0;

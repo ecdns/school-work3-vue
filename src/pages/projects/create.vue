@@ -1,29 +1,29 @@
 <template>
-    <div class="q-pa-md" style="max-width: 400px">
+
+    <q-tab-panel name="details">
         <q-form @submit.prevent.stop="onSubmit">
-            <div class="row flex flex-center">
-                <div class="col-10 ">
-                    <div class="row justify-around q-my-sm">
-                        <q-input outlined v-model="project.name" name="name" label="Nom" class=" input col-5"
+            <div class="column flex flex-center">
+                    <div class="row justify-around ">
+                        <q-input outlined v-model="project.name" name="name" label="Nom" class=" input col-6"
                             :aria-required="true" lazy-rules :rules="[
                                 (val) =>
                                     (val !== null && val !== '') || 'Veuillez entrer un nom',
                             ]" />
                         <q-input outlined v-model="project.description" name="description" label="Description"
-                            class=" input col-5" :aria-required="true" lazy-rules :rules="[
+                            class=" input col-6" :aria-required="true" lazy-rules :rules="[
                                 (val) =>
                                     val !== null ||
                                     val !== '' ||
                                     'Veuillez entrer une description'
                             ]" />
                     </div>
-                    <div class="row justify-around q-my-sm">
+                    <div class="row justify-around ">
                         <q-input disable outlined v-model="project.company" name="company" label="Entreprise"
-                            class=" input col-5" />
+                            class=" input col-6" />
                         <q-input disable outlined v-model="project.creator" name="creator" label="Créateur"
-                            class=" input col-5" />
+                            class=" input col-6" />
                     </div>
-                    <div class="row justify-around q-my-sm">
+                    <div class="row justify-around">
                         <div class="q-gutter-md row items-start">
                             <q-select filled v-model="project.customer" use-chips label="Choisir un client"
                                 :options="customerList" style="width: 250px" option-label="email" option-value="id"
@@ -45,13 +45,12 @@
                             </q-select>
                         </div>
                     </div>
-                </div>
                 <div class="flex flex-center q-py-md">
                     <q-btn outlined ripple label="Créer un projet" type="submit" color="primary" />
                 </div>
             </div>
         </q-form>
-    </div>
+    </q-tab-panel>
 </template>
 
 <script>

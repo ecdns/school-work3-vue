@@ -1,18 +1,24 @@
 <template>
-  <div>
+  <div class="q-mt-xl">
     <div class="invoice-box" id="facture">
       <table cellpadding="0" cellspacing="0">
         <tr class="top">
-          <td colspan="2">
+          <td colspan="5">
             <table>
               <tr>
                 <td class="title">
                   <img src="https://via.placeholder.com/150x50.png?text=Logo" style="width:100%; max-width:300px;">
                 </td>
 
-                <td>
-                  Numéro de facture : {{ invoiceData.id}}<br>
-                  Date : {{ invoiceData.createdAt }}
+                <td class="invoice-info">
+                  <div>
+                    <div class="info-label">Numéro de facture :</div>
+                    <div class="info-value">{{ invoiceData.id }}</div>
+                  </div>
+                  <div>
+                    <div class="info-label">Date :</div>
+                    <div class="info-value">{{ invoiceData.createdAt }}</div>
+                  </div>
                 </td>
               </tr>
             </table>
@@ -20,23 +26,22 @@
         </tr>
 
         <tr class="information">
-          <td colspan="2">
+          <td colspan="5">
             <table>
               <tr>
-                <td>
+                <td colspan="3">
                   <strong style="text-decoration: underline">Vendeur :</strong><br>
-                  {{ invoiceData.project.company.name }}<br>
-                  {{ invoiceData.project.company.address }}<br>
-                  {{ invoiceData.project.company.zipCode }} {{ invoiceData.project.company.city }}<br>
-                  {{ invoiceData.project.company.country }}
+                  {{ invoiceCompany.name }}<br>
+                  {{ invoiceCompany.address }}<br>
+                  {{ invoiceCompany.zipCode }} {{ invoiceCompany.city }}<br>
+                  {{ invoiceCompany.country }}
                 </td>
-
-                <td>
-                  <strong style="text-decoration: underline">Acheteur</strong><br>
-                  {{ invoiceData.project.customer.name }}<br>
-                  {{ invoiceData.project.customer.address }}<br>
-                  {{ invoiceData.project.customer.zipCode }} {{ invoiceData.project.customer.city }}<br>
-                  {{ invoiceData.project.customer.country }}
+                <td colspan="3">
+                  <strong style="text-decoration: underline">Acheteur :</strong><br>
+                  {{ invoiceCustomer.name }}<br>
+                  {{ invoiceCustomer.address }}<br>
+                  {{ invoiceCustomer.zipCode }} {{ invoiceCustomer.city }}<br>
+                  {{ invoiceCustomer.country }}
                 </td>
               </tr>
             </table>
@@ -44,110 +49,116 @@
         </tr>
 
         <tr class="heading">
-          <td>
-            Description
-          </td>
-
-          <td>
-            Prix
-          </td>
+          <td>Libellé</td>
+          <td>Quantité</td>
+          <td>Type de Quantité</td>
+          <td>Prix Unitaire</td>
+          <td>Prix Total</td>
         </tr>
 
-        <tr class="item">
-          <td>
-            Produit 1
-          </td>
-
-          <td>
-            10,00 €
-          </td>
+       <tr v-for="invoiceProduct in invoiceData.invoiceProducts" :key="invoiceProduct.id" class="item">
+          <td>{{ invoiceProduct.product.name }}</td>
+          <td>{{ invoiceProduct.quantity }}</td>
+          <td>{{ invoiceProduct.product.quantityUnit.name }}</td>
+          <td>{{ invoiceProduct.product.sellPrice }} €</td>
+          <td>{{ (invoiceProduct.product.sellPrice * invoiceProduct.quantity ) }} €</td>
         </tr>
 
-        <tr class="item">
-          <td>
-            Produit 2
-          </td>
 
-          <td>
-            20,00 €
-          </td>
-        </tr>
-
-        <tr class="item last">
-          <td>
-            Produit 3
-          </td>
-
-          <td>
-            30,00 €
-          </td>
-        </tr>
 
         <tr class="total">
-          <td></td>
-
+          <td colspan="3"></td>
           <td>
-            Total: 60,00 €
+            Total HT: {{ invoiceData.totalAmount }} €
+          </td>
+        </tr>
+        <tr class="total">
+          <td colspan="3"></td>
+          <td>
+            Total TTC: {{ invoiceData.totalAmountWithVat }} €
           </td>
         </tr>
       </table>
     </div>
+    <div class="flex flex-center column">
+
+      <q-btn @click="generatePDF"  label="Télécharger le PDF" class="q-mt-md" color="primary" />
+      <q-btn @click="goback" label="Retour" class="q-mt-md" color="primary" />
+    </div>
+
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import {useResource} from "src/composables/resources";
+import { useResource } from "src/composables/resources";
+import { useRoute } from "vue-router";
+import { ref } from "vue";
+import { useQuasar } from "quasar";
+import jsPDF from "jspdf";
+import html2pdf from 'html2pdf.js';
 
 export default {
+  setup() {
+    const invoice = useResource("invoice");
+    const route = useRoute();
+    const invoiceId = ref(route.params.id);
+    const q = useQuasar();
+    return {
+      route,
+      invoiceId,
+      invoice,
+      q,
+    };
+  },
+  created() {
+    this.reloadData();
+  },
   data() {
     return {
       invoiceData: {},
-      columns: [
-        { name: 'Item', required: true, label: 'Item', align: 'left', field: 'item', sortable: true },
-        { name: 'Quantity', required: true, label: 'Quantity', align: 'left', field: 'quantity', sortable: true },
-        { name: 'Price', required: true, label: 'Price', align: 'left', field: 'price', sortable: true }
-      ]
+      invoiceProject: {},
+      invoiceCompany: {},
+      invoiceCustomer: {},
     };
   },
-  mounted() {
-    const invoiceId = this.$route.params.id; // Récupérer l'ID depuis l'URL
-    console.log(invoiceId)
-    this.getInvoiceData(invoiceId);
-  },
   methods: {
-    getInvoiceData(invoiceId) {
-      const resourceInvoice = useResource('invoice');
-      resourceInvoice.get(invoiceId)
-        .then(response => {
-          console.log(response);
-          this.invoiceData = response;
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }
-  }
+    reloadData() {
+      this.invoice.get(this.route.params.id).then((res) => {
+        this.invoiceData = res;
+        this.invoiceProject = res.project;
+        this.invoiceCompany = res.project.company;
+        this.invoiceCustomer = res.project.customer;
+        console.log(this.invoiceData);
+      });
+    },
+    async generatePDF() {
+      const element = document.getElementById('facture');
+
+      // Options de configuration pour html2pdf
+      const options = {
+        filename: 'facture.pdf',
+        image: { type: 'pdf', quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      // Générer le PDF avec html2pdf
+      html2pdf().set(options).from(element).save();
+    },
+    goback() {
+      this.$router.go(-1);
+    },
+  },
 };
 </script>
 
 <style scoped>
-.invoice {
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.items-table {
-  margin-top: 20px;
-}
-
 .invoice-box {
   max-width: 850px;
   margin: auto;
   padding: 30px;
-  margin-left: 100px;
   border: 1px solid #eee;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
   font-size: 16px;
   line-height: 24px;
   font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
@@ -189,11 +200,7 @@ export default {
   font-weight: bold;
 }
 
-.invoice-box table tr.details td {
-  padding-bottom: 20px;
-}
-
-.invoice-box table tr.item td{
+.invoice-box table tr.item td {
   border-bottom: 1px solid #eee;
 }
 
@@ -219,5 +226,4 @@ export default {
     text-align: center;
   }
 }
-
 </style>

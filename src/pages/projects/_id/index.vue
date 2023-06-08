@@ -9,7 +9,6 @@
         align="justify">
         <q-tab name="details" label="Détails" />
         <q-tab name="bill" label="Facture" />
-        <q-tab name="documents" label="Documents" />
       </q-tabs>
 
       <q-tab-panels v-model="tab" animated>
@@ -23,15 +22,15 @@
                     class=" input col-5" />
                 </div>
                 <div class="row justify-around q-my-sm">
-                  <q-input :disable="true" outlined :v-model="auth.me.company" name="company" label="Entreprise"
+                  <q-input :disable="true" outlined v-model="project.companyName" name="company" label="Entreprise"
                     class=" input col-5" />
-                  <q-input :disable="true" outlined v-model="auth.me.firstName" name="creator" label="Créateur"
+                  <q-input :disable="true" outlined v-model="project.nameString" name="creator" label="Créateur"
                     class=" input col-5" />
                 </div>
                 <div class="row justify-around q-my-sm">
-                  <q-select filled v-model="project.customer" :options="customersList" option-label="name"
+                  <q-select class="input col-5" filled v-model="project.customer" :options="customersList" option-label="name"
                     label="Client" />
-                  <q-select filled v-model="project.projectStatus" :options="statusList" option-label="name"
+                  <q-select class="input col-5" filled v-model="project.projectStatus" :options="statusList" option-label="name"
                     label="Statut" />
                 </div>
                 <div class="flex flex-center q-py-md">
@@ -43,17 +42,21 @@
         </q-tab-panel>
 
         <q-tab-panel name="bill">
-          <div class="text-h6">Ma liste de factures</div>
-          <invoice-list :invoices="items" />
-        </q-tab-panel>
-
-        <q-tab-panel name="documents">
-          <div class="text-h6">Déposer un fichier</div>
-          <div class="q-pa-md">
-            <div class="q-gutter-md row items-start">
-              <q-input @update:model-value="val => { file = val[0] }" filled type="file" hint="Déposer ici !" />
-            </div>
+          <div class="float-right" >
+            <q-btn color="primary" label="Ajouter une facture" @click="dialogVisible = true" />
           </div>
+          <q-dialog v-model="dialogVisible" position="absolute" transition-show="slide-down" transition-hide="slide-up"
+                    class="flex flex-center column">
+            <q-card style="min-width: 60vw">
+              <q-card-section>
+                <q-form action="" method="post" @submit.prevent.stop="onSubmitInvoice">
+                  <InvoiceForm ref="InvoiceForm" />
+                </q-form>
+              </q-card-section>
+            </q-card>
+          </q-dialog>
+          <div class="text-h6 q-mt-xl">Ma liste de factures</div>
+          <invoice-list :invoices="items" />
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -69,14 +72,17 @@ import useQuasar from 'quasar/src/composables/use-quasar';
 // import jsPDF from 'jspdf';
 import InvoiceList from 'src/components/InvoiceList.vue';
 import { useAuthStore } from 'src/stores/auth';
+import InvoiceForm from "components/InvoiceForm.vue";
 
 export default {
   components: {
-    InvoiceList
+    InvoiceList,
+    InvoiceForm
   },
   setup() {
     const projects = useResource("project");
     const invoices = useResource("invoice");
+
     const customers = useResource("customer")
     const companies = useResource("company");
     const status = useResource("projectStatus");
@@ -84,6 +90,7 @@ export default {
     const projectId = ref(route.params.id);
     const q = useQuasar();
     const auth = useAuthStore();
+
 
     return {
       tab: ref("details"),
@@ -110,7 +117,10 @@ export default {
       files: ref(null),
       items: [],
       statusList: [],
-      customersList: []
+      customersList: [],
+      dialogVisible: false,
+      postData: {},
+
     };
   },
 
@@ -128,9 +138,48 @@ export default {
         this.project.description = res.description;
         this.project.customer = res.customer;
         this.project.projectStatus = res.projectStatus;
+        this.project.creator = res.creator;
+        this.project.nameString = this.project.creator.firstName + ' ' + this.project.creator.lastName
+        this.project.companyName = res.company.name;
       });
-      this.invoices.listWithoutAll().then((res) => {
+      const invoiceByProject = useResource("invoice/project/"+this.route.params.id)
+      invoiceByProject.listWithoutAll().then((res) => {
         this.items = res.data
+      })
+    },
+    onSubmitInvoice() {
+      this.postData = {
+        ... {
+          name: this.$refs.InvoiceForm.name,
+          description: this.$refs.InvoiceForm.description,
+          project: this.project.id
+        }
+      }
+      console.log(this.postData);
+      this.invoices.create(JSON.stringify(this.postData)).then(res => {
+        console.log(res);
+        this.$refs.InvoiceForm.products.forEach((product) => {
+          console.log(res.id)
+          console.log(product)
+          console.log(product.quantity)
+          const invoiceProducts = useResource("invoice/"+res.id+"/product/"+product.selectedValue.value+"/quantity/"+product.quantity)
+          invoiceProducts.create().then((res) => {
+            console.log(res)
+          })
+        })
+        window.location.reload();
+        this.q.notify({
+          position: "top",
+          type: "positive",
+          message: `La facture a bien été créé`,
+          timeout: 3500
+        })
+      }).catch(() => {
+        this.q.notify({
+          position: "top",
+          type: "negative",
+          message: `Erreur lors de la création de la facture`,
+        });
       })
     },
     onSubmit() {
