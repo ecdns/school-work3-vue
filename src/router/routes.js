@@ -121,7 +121,19 @@ const routes = [
           },
           {
             path: 'users/:id',
-            component: () => import('pages/admin/_id/index.vue')
+            component: () => import('src/pages/admin/_id/users.vue')
+          },
+          {
+            path: 'familyProducts/:id',
+            component: () => import('src/pages/admin/_id/familyProducts.vue')
+          },
+          {
+            path: 'users/create',
+            component: () => import('src/pages/admin/createUser.vue')
+          },
+          {
+            path: 'familyProducts/create',
+            component: () => import('src/pages/admin/familyProducts.vue')
           }
         ]
       },
