@@ -14,7 +14,7 @@ export default {
       options: {
         title: {
           text: 'ApexBar',
-          align: 'left'
+          align: 'center'
         },
         chart: {
           id: 'apex-bar'

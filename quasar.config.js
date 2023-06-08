@@ -14,6 +14,9 @@ const { configure } = require('quasar/wrappers');
 
 module.exports = configure(function (/* ctx */) {
   return {
+    bin: {
+      linuxAndroidStudio: '/home/dorian/.local/share/JetBrains/Toolbox/apps/AndroidStudio/ch-0/223.8836.35.2231.10075884/bin/studio.sh'
+    },
     eslint: {
       // fix: true,
       // include = [],

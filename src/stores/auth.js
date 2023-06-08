@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { LocalStorage } from "quasar";
 import { api } from "src/boot/axios";
+
 // var encryptionKey = 'enzoCestLeplusbeauEtLeoAussiEtViveLe69';
 
 export const useAuthStore = defineStore("auth", {

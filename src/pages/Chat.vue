@@ -14,6 +14,7 @@
 import Contacts from 'src/components/Contacts.vue';
 import SearchBar from 'src/components/SearchBar.vue';
 import { useResource } from 'src/composables/resources';
+import {useAuthStore} from "stores/auth";
 
 export default {
     components: {
@@ -21,9 +22,9 @@ export default {
         SearchBar
     },
     setup() {
-        const projects = useResource('project');
 
-        return { projects }
+      const auth = useAuthStore();
+        return { auth }
     },
     data() {
         return {
@@ -36,7 +37,8 @@ export default {
     },
     methods: {
         reloadData() {
-            this.projects.list().then((res) => {
+          const projects = useResource('project/user/'+this.auth.me.id);
+            projects.listWithoutAll().then((res) => {
                 this.contacts = res.data;
                 console.log(this.contacts)
             })
