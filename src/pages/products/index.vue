@@ -35,13 +35,21 @@ import { useAuthStore } from 'src/stores/auth';
 import { useQuasar } from 'quasar';
 export default {
   components: { ProductList, ProductCreateForm, },
+  setup() {
+    const auth = useAuthStore();
+    const q = useQuasar()
 
+    return {
+      auth,
+      q
+    };
+  },
   data() {
     return {
-      q: useQuasar(),
-      auth: useAuthStore(),
+
       dialogVisible: false,
-      products: useResource('product'),
+      products: useResource(`product`),
+      productData: useResource(`product/company/${this.auth.me.company}`),
       postData: [],
       items: [],
 
@@ -52,7 +60,7 @@ export default {
   methods: {
 
     reloadData() {
-      this.products.list()
+      this.productData.listWithoutAll()
         .then((res) => {
           this.items = res.data
         })

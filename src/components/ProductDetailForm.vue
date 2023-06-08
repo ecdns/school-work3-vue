@@ -181,7 +181,7 @@ export default {
           position: "top",
           type: "positive",
           message: `Le produit a bien été mis à jour`,
-          timeout: 3000
+          timeout: 2000
         })
         setTimeout(() => {
           window.location.reload()
