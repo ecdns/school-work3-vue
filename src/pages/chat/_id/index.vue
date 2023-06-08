@@ -2,9 +2,13 @@
     <q-page style="width: 50%;">
         <q-icon></q-icon>
         <div class="flex column">
-            <q-chip>
+            <q-chip class="q-ma-sm" color="primary" text-color="white" dense outlined
+                style="font-size: 18px; height: 40px;">
                 {{ project.name }}
             </q-chip>
+            <div class="flex flex-center">
+                <q-btn @click="goback" label="Retour" style="width: 10%" class="q-mt-xs" color="primary" />
+            </div>
             <Message />
             <q-form>
                 <q-input class="q-ma-lg" filled bottom-slots v-model="message.message" label="Nouveau message ..."
@@ -60,6 +64,9 @@ export default {
                 this.project = res
                 console.log(this.project)
             })
+        },
+        goback() {
+            this.$router.go(-1);
         },
         sendMessage() {
             this.message.sender = this.auth.me.id
