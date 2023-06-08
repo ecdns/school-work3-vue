@@ -35,6 +35,7 @@
                 </div>
                 <div class="flex flex-center q-py-md">
                   <q-btn class="" outlined ripple label="Mettre à jour" type="submit" color="primary" />
+                  <q-btn class="" outlined ripple label="Retour" type="submit" color="primary" />
                 </div>
               </div>
             </div>
@@ -45,7 +46,7 @@
           <div class="float-right" >
             <q-btn color="primary" label="Ajouter une facture" @click="dialogVisible = true" />
           </div>
-          <q-dialog v-model="dialogVisible" position="absolute" transition-show="slide-down" transition-hide="slide-up"
+          <q-dialog v-model="dialogVisible" transition-show="slide-down" transition-hide="slide-up"
                     class="flex flex-center column">
             <q-card style="min-width: 60vw">
               <q-card-section>
@@ -164,10 +165,10 @@ export default {
           console.log(product.quantity)
           const invoiceProducts = useResource("invoice/"+res.id+"/product/"+product.selectedValue.value+"/quantity/"+product.quantity)
           invoiceProducts.create().then((res) => {
-            console.log(res)
+            window.location.reload();
           })
         })
-        window.location.reload();
+
         this.q.notify({
           position: "top",
           type: "positive",
