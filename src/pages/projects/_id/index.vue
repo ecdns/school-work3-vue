@@ -2,6 +2,7 @@
   <q-page class="fit">
     <q-card class="q-ma-md">
       <q-card-section>
+        <q-btn icon="arrow_back" @click="goback" class="q-mb-md" outlined ripple label="Retour" type="button" color="primary" />
         <div class="text-h6">{{ project.name }}</div>
         <div class="text-subtitle2">{{ project.description }}</div>
       </q-card-section>
@@ -35,7 +36,6 @@
                 </div>
                 <div class="flex column flex-center q-py-md">
                   <q-btn class="q-mb-md" outlined ripple label="Mettre à jour" type="submit" color="primary" />
-                  <q-btn @click="goback" class="q-mb-md" outlined ripple label="Retour" type="button" color="primary" />
                 </div>
               </div>
             </div>
