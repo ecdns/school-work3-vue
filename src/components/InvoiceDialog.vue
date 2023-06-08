@@ -95,21 +95,30 @@ export default {
       visible: false
     }
   },
-  created() {
-    // console.log(this.visible)
-    this.passEvent();
-  },
   methods: {
     getTotalPrice(products) {
       products.forEach(product => {
         this.totalPrice += product.sellPrice;
       });
       return this.totalPrice;
-    },
-    passEvent() {
-      this.$emit('changeBool', `${this.visible}`)
-    },
+    }
+  }
+},
+created() {
+  // console.log(this.visible)
+  this.passEvent();
+},
+methods: {
+  getTotalPrice(products) {
+    products.forEach(product => {
+      this.totalPrice += product.sellPrice;
+    });
+    return this.totalPrice;
   },
+  passEvent() {
+    this.$emit('changeBool', `${this.visible}`)
+  },
+},
 
 
 }

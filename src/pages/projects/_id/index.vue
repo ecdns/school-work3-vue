@@ -113,20 +113,20 @@ export default {
         this.items = res.data
       })
     },
-    onSubmit() {
-      this.projects.update(this.route.params.id, this.project).then((res) => {
-        this.q.notify({
-          position: "top",
-          type: "positive",
-          message: `Le projet a bien été modifié`,
-        });
-      }).catch(() => {
-        this.q.notify({
-          position: "top",
-          type: "negative",
-          message: `Erreur lors de la modification du projet`,
-        });
-      });
+    setup() {
+      const projects = useResource("project");
+      const route = useRoute();
+      const invoices = useResource("invoice/project/" + route.params.id)
+      const projectId = ref(route.params.id);
+      const q = useQuasar();
+      return {
+        tab: ref("details"),
+        route,
+        projectId,
+        projects,
+        invoices,
+        q
+      };
     },
     areDataUpdated() {
       if (this.lastName !== "Jhon") {
@@ -138,10 +138,45 @@ export default {
       this.readOnlyData = !this.readOnlyData,
         this.readOnlyData ? this.updateDataIcon = "lock" : this.updateDataIcon = "lock_open";
     },
-    exportToPDF() {
-      const doc = new jsPDF();
-      doc.text("Contenu du PDF", 10, 10);
-      doc.save("mon-fichier.pdf");
+    methods: {
+      reloadData() {
+        this.projects.get(this.route.params.id).then((res) => {
+          this.project = res;
+        });
+        this.invoices.listWithoutAll().then((res) => {
+          this.items = res.data
+        })
+      },
+      onSubmit() {
+        this.projects.update(this.route.params.id, this.project).then((res) => {
+          this.q.notify({
+            position: "top",
+            type: "positive",
+            message: `Le projet a bien été modifié`,
+          });
+        }).catch(() => {
+          this.q.notify({
+            position: "top",
+            type: "negative",
+            message: `Erreur lors de la modification du projet`,
+          });
+        });
+      },
+      areDataUpdated() {
+        if (this.lastName !== "Jhon") {
+          return true;
+        }
+        return false;
+      },
+      UpdateProject() {
+        this.readOnlyData = !this.readOnlyData,
+          this.readOnlyData ? this.updateDataIcon = "lock" : this.updateDataIcon = "lock_open";
+      },
+      exportToPDF() {
+        const doc = new jsPDF();
+        doc.text("Contenu du PDF", 10, 10);
+        doc.save("mon-fichier.pdf");
+      },
     },
   },
 }
