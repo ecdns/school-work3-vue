@@ -116,6 +116,16 @@ const routes = [
         beforeEnter: ifAuthenticated
       },
       {
+        path: 'invoice',
+        beforeEnter: ifAuthenticated,
+        children: [
+          {
+            path: ':id',
+            component: () => import('components/templates/InvoiceTemplate.vue')
+          }
+        ]
+      },
+      {
         path: '/:catchAll(.*)*',
         component: () => import('pages/ErrorNotFound.vue')
       },
