@@ -22,6 +22,12 @@ export default {
   props: {
     products: Array
   },
+  setup() {
+    const router = useRouter();
+    return {
+      router
+    }
+  },
   data() {
     return {
 
@@ -35,46 +41,23 @@ export default {
           format: val => `${val}`,
           sortable: true
         },
-        { name: 'supplier', label: 'Fournisseur', field: 'supplier' },
+        { name: 'supplier', align: 'center', label: 'Fournisseur', field: row => row.supplier.name },
         { name: 'quantity', align: 'center', label: 'Quantité', field: 'quantity', sortable: true },
-        { name: 'quantityUnit', align: 'center', label: 'Unité', field: 'quantityUnit', sortable: true },
+        { name: 'quantityUnit', align: 'center', label: 'Unité', field: row => row.quantityUnit.name, sortable: true },
 
       ],
-
-
     }
   },
 
   methods: {
-    // initializeRouter() {
-    //   const router = useRouter();
-    // },
-
     handleRowClick(_, row) {
-      const router = useRouter();
-      let data = {
-        id: row.id,
-        name: row.name,
-        reference: row.reference,
-        supplier: row.supplier
-      }
-      this.$router.push({
+      this.router.push({
         path: `/products/${row.id}`,
-        params: { data }
-        // params: {
-        //   id: row.id,
-        //   name: row.name,
-        //   reference: row.reference,
-        //   supplier: row.supplier
-        // }
       });
-
     },
 
   },
-  mounted() {
-    // this.initializeRouter();
-  }
+
 }
 </script>
 

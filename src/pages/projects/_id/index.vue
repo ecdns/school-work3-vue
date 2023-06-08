@@ -1,68 +1,66 @@
 <template>
-    <q-page class="fit">
-        <q-card class="q-ma-md">
-            <q-card-section>
-                <div class="text-h6">{{ project.name }}</div>
-                <div class="text-subtitle2">{{ project.description }}</div>
-            </q-card-section>
-            <q-tabs v-model="tab" dense class="bg-grey-3 text-grey-7" active-color="primary" indicator-color="purple"
-                align="justify">
-                <q-tab name="details" label="Détails" />
-                <q-tab name="bill" label="Facture" />
-                <q-tab name="documents" label="Documents" />
-            </q-tabs>
+  <q-page class="fit">
+    <q-card class="q-ma-md">
+      <q-card-section>
+        <div class="text-h6">{{ project.name }}</div>
+        <div class="text-subtitle2">{{ project.description }}</div>
+      </q-card-section>
+      <q-tabs v-model="tab" dense class="bg-grey-3 text-grey-7" active-color="primary" indicator-color="purple"
+        align="justify">
+        <q-tab name="details" label="Détails" />
+        <q-tab name="bill" label="Facture" />
+        <q-tab name="documents" label="Documents" />
+      </q-tabs>
 
-            <q-tab-panels v-model="tab" animated>
-                <q-tab-panel name="details">
-                    <q-form action="" method="post" @submit.prevent.stop="onSubmit">
-                        <q-icon @click="UpdateProject" :name="updateDataIcon" size="2em" color="primary"
-                            class="q-ml-lg"></q-icon>
-                        <div class="row flex flex-center">
-                            <div class="col-10 ">
-                                <div class="row justify-around q-my-sm">
-                                    <q-input outlined :readonly="readOnlyData" v-model="project.name" name="name"
-                                        label="Nom" class=" input col-5" />
-                                    <q-input outlined :readonly="readOnlyData" v-model="project.description"
-                                        name="description" label="Description" class=" input col-5" />
-                                </div>
-                                <div class="row justify-around q-my-sm">
-                                    <q-input outlined :readonly="readOnlyData" v-model="project.company_id" name="company"
-                                        label="Entreprise" class=" input col-5" />
-                                    <q-input outlined :readonly="readOnlyData" v-model="project.creator_id" name="creator"
-                                        label="Créateur" class=" input col-5" />
-                                </div>
-                                <div class="row justify-around q-my-sm">
-                                    <q-input outlined :readonly="readOnlyData" v-model="project.customer_id" name="client"
-                                        label="Client" class=" input col-5" />
-                                    <q-input outlined :readonly="readOnlyData" v-model="project.project_status"
-                                        name="status" label="Statut" class=" input col-5" />
-                                </div>
-                                <div class="flex flex-center q-py-md">
-                                    <q-btn class="" outlined ripple label="Mettre à jour" :disable="!areDataUpdated"
-                                        type="submit" color="primary" />
-                                </div>
-                            </div>
-                        </div>
-                    </q-form>
-                </q-tab-panel>
+      <q-tab-panels v-model="tab" animated>
+        <q-tab-panel name="details">
+          <q-form action="" method="post" @submit.prevent.stop="onSubmit">
+            <q-icon @click="UpdateProject" :name="updateDataIcon" size="2em" color="primary" class="q-ml-lg"></q-icon>
+            <div class="row flex flex-center">
+              <div class="col-10 ">
+                <div class="row justify-around q-my-sm">
+                  <q-input outlined :readonly="readOnlyData" v-model="project.name" name="name" label="Nom"
+                    class=" input col-5" />
+                  <q-input outlined :readonly="readOnlyData" v-model="project.description" name="description"
+                    label="Description" class=" input col-5" />
+                </div>
+                <div class="row justify-around q-my-sm">
+                  <q-input outlined :readonly="readOnlyData" v-model="project.company_id" name="company"
+                    label="Entreprise" class=" input col-5" />
+                  <q-input outlined :readonly="readOnlyData" v-model="project.creator_id" name="creator" label="Créateur"
+                    class=" input col-5" />
+                </div>
+                <div class="row justify-around q-my-sm">
+                  <q-input outlined :readonly="readOnlyData" v-model="project.customer_id" name="client" label="Client"
+                    class=" input col-5" />
+                  <q-input outlined :readonly="readOnlyData" v-model="project.project_status" name="status" label="Statut"
+                    class=" input col-5" />
+                </div>
+                <div class="flex flex-center q-py-md">
+                  <q-btn class="" outlined ripple label="Mettre à jour" :disable="!areDataUpdated" type="submit"
+                    color="primary" />
+                </div>
+              </div>
+            </div>
+          </q-form>
+        </q-tab-panel>
 
-                <q-tab-panel name="bill">
-                    <div class="text-h6">Ma liste de factures</div>
-                    <invoice-list :invoices="items" />
-                </q-tab-panel>
+        <q-tab-panel name="bill">
+          <div class="text-h6">Ma liste de factures</div>
+          <invoice-list :invoices="items" />
+        </q-tab-panel>
 
-                <q-tab-panel name="documents">
-                    <div class="text-h6">Déposer un fichier</div>
-                    <div class="q-pa-md">
-                        <div class="q-gutter-md row items-start">
-                            <q-input @update:model-value="val => { file = val[0] }" filled type="file"
-                                hint="Déposer ici !" />
-                        </div>
-                    </div>
-                </q-tab-panel>
-            </q-tab-panels>
-        </q-card>
-    </q-page>
+        <q-tab-panel name="documents">
+          <div class="text-h6">Déposer un fichier</div>
+          <div class="q-pa-md">
+            <div class="q-gutter-md row items-start">
+              <q-input @update:model-value="val => { file = val[0] }" filled type="file" hint="Déposer ici !" />
+            </div>
+          </div>
+        </q-tab-panel>
+      </q-tab-panels>
+    </q-card>
+  </q-page>
 </template>
 
 <script>
@@ -71,81 +69,81 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router';
 import { useResource } from 'src/composables/resources';
 import useQuasar from 'quasar/src/composables/use-quasar';
-import jsPDF from 'jspdf';
+// import jsPDF from 'jspdf';
 import InvoiceList from 'src/components/InvoiceList.vue';
 
 export default {
-    components: {
-        InvoiceList
+  components: {
+    InvoiceList
+  },
+  setup() {
+    const projects = useResource("project");
+    const invoices = useResource("invoice")
+    const route = useRoute();
+    const projectId = ref(route.params.id);
+    const q = useQuasar();
+    return {
+      tab: ref("details"),
+      route,
+      projectId,
+      projects,
+      invoices,
+      q
+    };
+  },
+  created() {
+    this.reloadData();
+  },
+  data() {
+    return {
+      project: {},
+      readOnlyData: true,
+      updateDataIcon: "lock",
+      file: ref(null),
+      files: ref(null),
+      items: []
+    };
+  },
+  methods: {
+    reloadData() {
+      this.projects.get(this.route.params.id).then((res) => {
+        this.project = res;
+      });
+      this.invoices.list().then((res) => {
+        this.items = res.data
+      })
     },
-    setup() {
-        const projects = useResource("project");
-        const invoices = useResource("invoice")
-        const route = useRoute();
-        const projectId = ref(route.params.id);
-        const q = useQuasar();
-        return {
-            tab: ref("details"),
-            route,
-            projectId,
-            projects,
-            invoices,
-            q
-        };
+    onSubmit() {
+      this.projects.update(this.route.params.id, this.project).then((res) => {
+        this.q.notify({
+          position: "top",
+          type: "positive",
+          message: `Le projet a bien été modifié`,
+        });
+      }).catch(() => {
+        this.q.notify({
+          position: "top",
+          type: "negative",
+          message: `Erreur lors de la modification du projet`,
+        });
+      });
     },
-    created() {
-        this.reloadData();
+    areDataUpdated() {
+      if (this.lastName !== "Jhon") {
+        return true;
+      }
+      return false;
     },
-    data() {
-        return {
-            project: {},
-            readOnlyData: true,
-            updateDataIcon: "lock",
-            file: ref(null),
-            files: ref(null),
-            items: []
-        };
+    UpdateProject() {
+      this.readOnlyData = !this.readOnlyData,
+        this.readOnlyData ? this.updateDataIcon = "lock" : this.updateDataIcon = "lock_open";
     },
-    methods: {
-        reloadData() {
-            this.projects.get(this.route.params.id).then((res) => {
-                this.project = res;
-            });
-            this.invoices.list().then((res) => {
-                this.items = res.data
-            })
-        },
-        onSubmit() {
-            this.projects.update(this.route.params.id, this.project).then((res) => {
-                this.q.notify({
-                    position: "top",
-                    type: "positive",
-                    message: `Le projet a bien été modifié`,
-                });
-            }).catch(() => {
-                this.q.notify({
-                    position: "top",
-                    type: "negative",
-                    message: `Erreur lors de la modification du projet`,
-                });
-            });
-        },
-        areDataUpdated() {
-            if (this.lastName !== "Jhon") {
-                return true;
-            }
-            return false;
-        },
-        UpdateProject() {
-            this.readOnlyData = !this.readOnlyData,
-                this.readOnlyData ? this.updateDataIcon = "lock" : this.updateDataIcon = "lock_open";
-        },
-        exportToPDF() {
-            const doc = new jsPDF();
-            doc.text("Contenu du PDF", 10, 10);
-            doc.save("mon-fichier.pdf");
-        },
+    exportToPDF() {
+      const doc = new jsPDF();
+      doc.text("Contenu du PDF", 10, 10);
+      doc.save("mon-fichier.pdf");
     },
+  },
 }
 
 </script>
