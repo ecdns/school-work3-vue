@@ -48,7 +48,7 @@
             <q-avatar :style="{ 'background-color': colorBackground }" text-color="white" size="45px">{{ auth.me.firstName.substring(0, 1) }}{{ auth.me.lastName.substring(0, 1) }}</q-avatar>
           </q-item-section>
           <q-item-section>
-            <q-item-label>{{ auth.me.firstName }} {{ auth.me.lastName }}</q-item-label>
+            <q-item-label style="font-weight: bold;" class="text-h6" >{{ auth.me.firstName }} {{ auth.me.lastName }}</q-item-label>
           </q-item-section>
         </q-item>
         <q-separator black />
@@ -57,7 +57,7 @@
             <q-icon :name="link.icon" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>{{ link.title }}</q-item-label>
+            <q-item-label style="font-weight: bold">{{ link.title }}</q-item-label>
             <q-item-label caption>{{ link.caption }}</q-item-label>
           </q-item-section>
         </q-item>
