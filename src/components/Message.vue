@@ -1,10 +1,10 @@
 <template>
-    <div style="width: 100%;">
+    <div style="width: 100%;" v-if="messages.length > 0">
         <div v-for="message in messages" :key="message.id">
             <q-chat-message v-if="message.sender.id === auth.me.id" :name="[auth.me.firstName]"
-                :avatar="auth.me.firstName[0]" :text="[message.message]" :stamp="message.createdAt" sent />
-            <q-chat-message v-else :name="message.sender.firstName" :avatar="message.sender.firstName[0]"
-                :text="message.message" :stamp="message.createdAt" />
+                :avatar="[auth.me.firstName[0]]" :text="[message.message]" :stamp="[message.createdAt]" sent />
+            <q-chat-message v-else :name="[message.sender.firstName]" :avatar="[message.sender.firstName[0]]"
+                :text="[message.message]" :stamp="[message.createdAt]" />
         </div>
     </div>
 </template>
@@ -35,8 +35,25 @@ export default {
         reloadData() {
             this.conversation.listWithoutAll().then((res) => {
                 this.messages = res.data
+                this.messages.forEach(element => {
+                    console.log(element.message)
+                });
                 console.log(this.messages)
             })
+        },
+        stringToHexColor(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+
+            let hexColor = "#";
+            for (let j = 0; j < 3; j++) {
+                let value = (hash >> (j * 8)) & 0xff;
+                hexColor += ("00" + value.toString(16)).substr(-2);
+            }
+
+            return hexColor;
         }
     }
 }
