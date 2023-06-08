@@ -1,6 +1,8 @@
 <template>
   <q-page class="fit">
     <q-card class="q-ma-md">
+      <q-btn icon="arrow_back" @click="goBack" label="Retour" color="primary" class="q-mb-md" />
+
       <q-tabs v-model="tab" dense class="bg-grey-3 text-grey-7" active-color="primary" indicator-color="purple"
         align="justify">
         <q-tab name="details" label="Détails" />
@@ -45,6 +47,11 @@ export default {
     return {
       product: useResource('product')
     }
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
   },
 
   components: { ProductDetailForm, },

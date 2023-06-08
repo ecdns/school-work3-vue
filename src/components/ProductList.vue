@@ -2,7 +2,8 @@
   <q-page>
     <div v-if="products.length !== 0">
       <div class="q-pa-md">
-        <q-table title="" :rows="products" :columns="columns" row-key="reference" @row-click="handleRowClick" />
+        <q-table title="" :rows="products" :columns="columns" row-key="reference" @row-click="handleRowClick"
+          rows-per-page-label="Résultats par page" :pagination-label="customPaginationLabel" />
       </div>
     </div>
 
@@ -55,7 +56,9 @@ export default {
         path: `/products/${row.id}`,
       });
     },
-
+    customPaginationLabel(firstRowIndex, endRowIndex, totalRowsNumber) {
+      return `${firstRowIndex}-${endRowIndex} sur ${totalRowsNumber}`;
+    }
   },
 
 }
