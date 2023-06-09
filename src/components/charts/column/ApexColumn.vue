@@ -1,26 +1,61 @@
 <template>
-  <apexchart height="300" type="bar" :options="options" :series="series"></apexchart>
+  <Apexchart height="300" type="bar" :options="chartOptions" :series="chartSeries"></Apexchart>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import { getCssVar } from 'quasar'
+import { defineComponent } from 'vue';
+import { getCssVar } from 'quasar';
+import VueApexCharts from "vue3-apexcharts";
+import { useResource } from "src/composables/resources";
 
-export default defineComponent({
-  name: 'ApexColumn',
-  data () {
-    return {
-      options: {
+export default {
+  components: {
+    Apexchart: VueApexCharts,
+  },
+  async created() {
+    this.userRole = [];
+    this.chartOptions = {};
+    this.chartSeries = [];
+
+    const userRole = useResource('role');
+
+    try {
+      const response = await userRole.list();
+      const promises = [];
+
+      response.data.forEach((item) => {
+        this.userRole.push(item.name);
+        const userResource = useResource('user/role/' + item.id);
+        const promise = userResource.listWithoutAll().then((response) => {
+          let totalUser = 0;
+          response.data.forEach((item) => {
+            totalUser ++;
+          });
+          this.chartSeries.push(totalUser);
+          return totalUser;
+        });
+
+      });
+      this.updateChartOptions();
+    } catch (error) {
+      // Gérer les erreurs ici
+    }
+
+    console.log(this.userRole);
+    console.log(this.chartSeries);
+  },
+  methods: {
+    updateChartOptions() {
+      this.chartOptions = {
         title: {
-          text: 'ApexColumn',
-          align: 'left'
+          text: 'Utilisateurs par Rôle',
+          align: 'center'
         },
         chart: {
           id: 'apex-column'
         },
-        colors: [getCssVar('primary'), getCssVar('secondary'), getCssVar('negative')],
         xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+          categories: this.userRole
         },
         plotOptions: {
           bar: {
@@ -28,13 +63,10 @@ export default defineComponent({
             columnWidth: '55%',
             endingShape: 'rounded'
           }
-        }
-      },
-      series: [{
-        name: 'series-1',
-        data: [30, 40, 45, 50, 49, 60, 70, 91]
-      }]
-    }
+        },
+        series: this.chartSeries
+      };
+    },
   }
-})
+}
 </script>

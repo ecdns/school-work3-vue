@@ -1,6 +1,6 @@
 <template>
   <div id="chart">
-    <Apexchart type="donut" :options="chartOptions" :series="series"></Apexchart>
+    <Apexchart height="300" type="donut" :options="chartOptions" :series="series"></Apexchart>
   </div>
 </template>
 
@@ -27,25 +27,37 @@ export default {
       series: []
     };
   },
-  created() {
-    const productFamilyResource = useResource('productFamily/company/' + this.auth.me.company)
+  async created() {
+    const productFamilyResource = useResource('productFamily/company/' + this.auth.me.company);
 
+    try {
+      const response = await productFamilyResource.listWithoutAll();
+      const promises = [];
 
-    productFamilyResource.listWithoutAll().then((response) => {
       response.data.forEach((item) => {
-        this.productFamilyList.push(item.name)
-        const productFamilyResource = useResource('product/productFamily/' + item.id)
-        productFamilyResource.listWithoutAll().then((response) => {
+        this.productFamilyList.push(item.name);
+        const productFamilyResource = useResource('product/productFamily/' + item.id);
+        const promise = productFamilyResource.listWithoutAll().then((response) => {
           let totalProducts = 0;
           response.data.forEach((item) => {
-            totalProducts += item.quantity
+            totalProducts += item.quantity;
           });
-          this.series.push(totalProducts);
+          return totalProducts;
         });
+        promises.push(promise);
       });
+
+      const seriesData = await Promise.all(promises);
+      this.series = seriesData;
       this.updateChartOptions();
-    });
+    } catch (error) {
+      // Gérer les erreurs ici
+    }
+
+    console.log(this.productFamilyList)
+    console.log(this.series)
   },
+
   methods: {
     updateChartOptions() {
       this.chartOptions = {

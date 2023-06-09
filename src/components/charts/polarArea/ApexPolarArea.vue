@@ -1,43 +1,80 @@
 <template>
-  <apexchart height="300" type="polarArea" :options="options" :series="series"></apexchart>
+  <Apexchart height="300" type="donut" :options="chartOptions" :series="series"></Apexchart>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
 import { getCssVar } from 'quasar'
+import {useAuthStore} from "stores/auth";
+import VueApexCharts from "vue3-apexcharts";
+import {useResource} from "src/composables/resources";
 
-export default defineComponent({
-  name: 'ApexPolarArea',
-  data () {
+export default {
+  components: {
+    Apexchart: VueApexCharts,
+  },
+  setup() {
+    const auth = useAuthStore();
+    const projetStatusResource = useResource('projectStatus');
+
     return {
-      options: {
+      auth,
+      projetStatusResource
+    }
+  },
+  data() {
+    return {
+      chartOptions: {},
+      projetStatus : [],
+      series: []
+    };
+  },
+  async created()  {
+    try {
+      const response = await this.projetStatusResource.list();
+
+      for (const item of response.data) {
+        this.projetStatus.push(item.name);
+
+        const project = useResource('project/projectStatus/' + item.id);
+        const projectResponse = await project.listWithoutAll();
+
+        let totalProjects = projectResponse.data.length;
+        this.series.push(totalProjects);
+      }
+
+      this.updateChartOptions();
+    } catch (error) {
+      console.error(error);
+    }
+  },
+
+  methods: {
+    updateChartOptions() {
+      this.chartOptions = {
         title: {
-          text: 'ApexPolarArea',
-          align: 'left'
+          text: 'Avencement des projets',
+          align: 'center'
         },
+        labels: this.projetStatus,
         chart: {
-          type: 'polarArea'
-        },
-        stroke: {
-          colors: [getCssVar('primary'), getCssVar('secondary'), getCssVar('negative')]
-        },
-        fill: {
-          opacity: 0.8
+          type: 'donut',
         },
         responsive: [{
           breakpoint: 480,
           options: {
             chart: {
-              width: 200
+              width: '100%',
+              height: '100%'
             },
             legend: {
               position: 'bottom'
             }
           }
         }]
-      },
-      series: [14, 23, 21, 17, 15, 10, 12, 17, 21]
-    }
+      };
+    },
+
+}
   }
-})
 </script>
