@@ -1,162 +1,119 @@
 <template>
-    <q-card class="my-card q-pa-md" flat bordered>
+    <q-card v-ripple class="my-card q-pa-md q-mb-lg" flat bordered>
         <q-card-section>
-            <div class="row no-wrap items-center">
-                <div class="col text-h6 ellipsis">
-                    {{ invoice.name }}
-                </div>
-                <div class="col-auto text-grey text-caption q-pt-md row no-wrap items-center">
-                    {{ invoice.description }}
-                </div>
-            </div>
-        </q-card-section>
+            <div class="column ">
 
-        <q-card-section class="q-pt-none">
-            <div class="text-subtitle1">
-                {{ invoice.invoiceProducts[0].product.quantity }} {{ invoice.invoiceProducts[0].product.name }}
-            </div>
-            <div class="text-caption text-grey">
-                {{ invoice.invoiceProducts[0].product.supplier.name }}
+                  <p class="text-h6">{{ invoice.name }}</p>
+                  <p>{{ invoice.description }}</p>
             </div>
         </q-card-section>
 
         <q-separator />
 
-        <q-card-actions>
-            <q-btn flat color="primary" @click="openInvoiceDialog">
-                Exporter PDF
-            </q-btn>
-        </q-card-actions>
-    </q-card>
-    <q-dialog v-model="visible" persistent transition-show="slide-up" transition-hide="slide-down">
-        <q-card class="bg-primary text-white flex column">
-            <q-bar>
-                <q-space />
-                <q-btn dense flat icon="close" v-close-popup>
-                    <q-tooltip class="bg-white text-primary">Close</q-tooltip>
-                </q-btn>
-            </q-bar>
-            <div class="invoice-box flex column items-center" id="facture">
-                <table cellpadding="0" cellspacing="0">
-                    <tr class="top">
-                        <td colspan="2">
-                            <table>
-                                <tr>
-                                    <td class="title">
-                                        <img src="https://via.placeholder.com/150x50.png?text=Logo"
-                                            style="width:100%; max-width:300px;">
-                                    </td>
+      <q-card-actions class="justify-between">
+        <div class="q-mr-md">
+          <q-btn flat color="primary" @click="router.push('/invoice/'+invoice.id)">
+            Voir la facture
+          </q-btn>
+        </div>
+        <div>
+          <q-btn color="primary" class="q-mr-lg" @click="showDialog = true">
+            Modifier la facture
+          </q-btn>
 
-                                    <td>
-                                        Numéro de facture : {{ invoice.id }}<br>
-                                        Date : {{ invoice.createdAt }}
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
+          <q-btn color="negative" @click="deleteInvoice">
+            Supprimer la facture
+          </q-btn>
+        </div>
+      </q-card-actions>
 
-                    <tr class="information">
-                        <td colspan="2">
-                            <table>
-                                <tr>
-                                    <td>
-                                        Vendeur<br>
-                                        {{ invoice.invoiceProducts[0].product.company.name }}<br>
-                                        {{ invoice.invoiceProducts[0].product.company.address }}<br>
-                                        {{ invoice.invoiceProducts[0].product.company.zipCode }}<br>
-                                        {{ invoice.invoiceProducts[0].product.company.country }}<br>
-                                    </td>
-
-                                    <td>
-                                        Acheteur<br>
-                                        {{ invoice.invoiceProducts[0].product.supplier.name }}<br>
-                                        {{ invoice.invoiceProducts[0].product.supplier.address }}<br>
-                                        {{ invoice.invoiceProducts[0].product.supplier.zipCode }}<br>
-                                        {{ invoice.invoiceProducts[0].product.supplier.country }}<br>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr class="heading">
-                        <td>
-                            Description
-                        </td>
-
-                        <td>
-                            Prix
-                        </td>
-                    </tr>
-                    <tr v-for="product in invoice.invoiceProducts" v-bind:key="product.id" class="item">
-                        <td>
-                            {{ product.product.description }}
-                        </td>
-
-                        <td>
-                            {{ product.product.sellPrice }}
-                        </td>
-                    </tr>
-
-                    <tr class="total">
-                        <td></td>
-
-                        <td>
-                            Total: {{ totalPrice }} €
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <q-btn @click="exportPDF()">Télécharger la facture</q-btn>
+<!--      Dialog to edit invoice-->
+      <q-dialog v-model="showDialog" transition-show="slide-down" transition-hide="slide-up"
+                class="flex flex-center column">
+        <q-card style="min-width: 60vw">
+          <q-card-section>
+            <q-form action="" method="post" @submit.prevent.stop="onSubmitInvoice">
+              <InvoiceEdit ref="InvoiceEdit" :invoice="invoice" />
+            </q-form>
+          </q-card-section>
         </q-card>
-    </q-dialog>
+      </q-dialog>
+
+    </q-card>
 </template>
 
 <script>
-import { useRoute, useRouter } from 'vue-router';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import { useResource } from "src/composables/resources";
-import {ref} from "vue";
+import {useRouter} from "vue-router";
+import InvoiceForm from "components/InvoiceForm.vue";
+import InvoiceEdit from "components/InvoiceEdit.vue";
+import {useResource} from "src/composables/resources";
 
 export default {
   props: {
     invoice: Object,
   },
+  components: {
+
+    InvoiceEdit
+  },
   setup() {
-    const route = useRoute();
     const router = useRouter();
-    const priceResource = useResource('invoice/totalAmountWithVat');
-
-    const totalPrice = ref(null); // Utiliser une référence réactive pour stocker le total
-
-    // Récupérer le total de la facture lors de la création du composant
-    priceResource.get(this.invoice.id).then((response) => {
-      totalPrice.value = response.data;
-    });
-
-    return { route, router, totalPrice, priceResource };
+    const invoices = useResource("invoice");
+    return {
+      router,
+      invoices
+    }
+  },
+  data() {
+    return {
+      showDialog : false,
+      postData: {}
+    }
   },
   methods: {
-    openInvoiceDialog() {
-      this.visible = true;
-    },
-    exportPDF() {
-      const element = document.getElementById("facture");
-
-      html2canvas(element).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF();
-        const imgProps = pdf.getImageProperties(imgData);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save("Facture numéro " + this.invoice.id);
+    deleteInvoice() {
+      const invoiceResource = useResource("invoice");
+      invoiceResource.delete(this.invoice.id).then(() => {
+        window.location.reload();
       });
     },
-  },
+    onSubmitInvoice() {
+      this.postData = {
+        ... {
+          name: this.$refs.InvoiceEdit.name,
+          description: this.$refs.InvoiceEdit.description,
+          project: this.invoice.project.id
+        }
+      }
+      console.log(this.postData);
+      this.invoices.update(this.invoice.id, JSON.stringify(this.postData)).then(res => {
+        console.log(res);
+        this.$refs.InvoiceEdit.products.forEach((product) => {
+
+          const invoiceProducts = useResource("invoice/"+this.invoice.id+"/product/"+product.selectedValue+"/quantity/"+product.quantity)
+          invoiceProducts.put().then((res) => {
+            window.location.reload();
+          })
+
+
+        })
+
+        this.q.notify({
+          position: "top",
+          type: "positive",
+          message: `La facture a bien été mis à jour`,
+          timeout: 3500
+        })
+      }).catch(() => {
+        this.q.notify({
+          position: "top",
+          type: "negative",
+          message: `Erreur lors de la modification de la facture`,
+        });
+      })
+    },
+  }
 };
 
 </script>
+

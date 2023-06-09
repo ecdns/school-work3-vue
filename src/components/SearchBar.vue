@@ -6,7 +6,7 @@
     </q-input>
     <ProjectList v-if="search.length && route.fullPath.includes('project')" :projects="filteredList()" />
     <Contacts v-if="search.length && route.fullPath.includes('chat')" :contacts="filteredList()" />
-    <div class="item error" v-if="search.length && !filteredList().length">
+    <div class="item error " v-if="search.length && !filteredList().length">
         <p>Aucun résultat trouvé !</p>
     </div>
 </template>

@@ -1,57 +1,56 @@
 <template>
-    <div class="q-pa-md" style="max-width: 400px">
+    <q-tab-panel name="details">
         <q-form @submit.prevent.stop="onSubmit">
-            <div class="row flex flex-center">
-                <div class="col-10 ">
-                    <div class="row justify-around q-my-sm">
-                        <q-input outlined v-model="project.name" name="name" label="Nom" class=" input col-5"
-                            :aria-required="true" lazy-rules :rules="[
+            <div class="column flex flex-center">
+                <div class="column justify-around" style="width: 100%">
+                    <q-input outlined v-model="project.name" name="name" label="Nom" class=" input col-6"
+                        :aria-required="true" lazy-rules :rules="[
+                            (val) =>
+                                (val !== null && val !== '') || 'Veuillez entrer un nom',
+                        ]" />
+                    <q-input outlined v-model="project.description" name="description" label="Description"
+                        class=" input col-6" :aria-required="true" lazy-rules :rules="[
+                            (val) =>
+                                val !== null ||
+                                val !== '' ||
+                                'Veuillez entrer une description'
+                        ]" />
+                </div>
+                <div class="column justify-around" style="width: 100%">
+                    <q-input disable outlined v-model="project.companyName" name="company" label="Entreprise"
+                        class="input col-6 q-mb-md" />
+                    <q-input disable outlined v-model="project.creator" name="creator" label="Créateur"
+                        class="input col-6 q-mb-md" />
+                </div>
+                <div class="column justify-around">
+                    <div class="q-gutter-md row items-start">
+                        <q-select filled v-model="project.customer" use-chips label="Choisir un client"
+                            :options="customerList" style="width: 250px" option-label="name" option-value="id" lazy-rules
+                            :rules="[
                                 (val) =>
-                                    (val !== null && val !== '') || 'Veuillez entrer un nom',
-                            ]" />
-                        <q-input outlined v-model="project.description" name="description" label="Description"
-                            class=" input col-5" :aria-required="true" lazy-rules :rules="[
+                                    (val !== null && val !== '') ||
+                                    'Veuillez sélectionner un client',
+                            ]">
+                        </q-select>
+                    </div>
+                    <div class="q-gutter-md row items-start">
+                        <q-select filled v-model="project.projectStatus" use-chips label="Choisir un statut"
+                            :options="statusList" style="width: 250px" option-label="name" option-value="id" lazy-rules
+                            :rules="[
                                 (val) =>
-                                    val !== null ||
-                                    val !== '' ||
-                                    'Veuillez entrer une description'
-                            ]" />
-                    </div>
-                    <div class="row justify-around q-my-sm">
-                        <q-input disable outlined v-model="project.company" name="company" label="Entreprise"
-                            class=" input col-5" />
-                        <q-input disable outlined v-model="project.creator" name="creator" label="Créateur"
-                            class=" input col-5" />
-                    </div>
-                    <div class="row justify-around q-my-sm">
-                        <div class="q-gutter-md row items-start">
-                            <q-select filled v-model="project.customer" use-chips label="Choisir un client"
-                                :options="customerList" style="width: 250px" option-label="email" option-value="id"
-                                lazy-rules :rules="[
-                                    (val) =>
-                                        (val !== null && val !== '') ||
-                                        'Veuillez sélectionner un client',
-                                ]">
-                            </q-select>
-                        </div>
-                        <div class="q-gutter-md row items-start">
-                            <q-select filled v-model="project.projectStatus" use-chips label="Choisir un statut"
-                                :options="statusList" style="width: 250px" option-label="name" option-value="id" lazy-rules
-                                :rules="[
-                                    (val) =>
-                                        (val !== null && val !== '') ||
-                                        'Veuillez sélectionner un statut',
-                                ]">
-                            </q-select>
-                        </div>
+                                    (val !== null && val !== '') ||
+                                    'Veuillez sélectionner un statut',
+                            ]">
+                        </q-select>
                     </div>
                 </div>
-                <div class="flex flex-center q-py-md">
-                    <q-btn outlined ripple label="Créer un projet" type="submit" color="primary" />
+                <div class="flex column flex-center q-py-md">
+                    <q-btn outlined ripple label="Créer un projet" type="submit" color="primary" class="q-ma-sm"/>
+                    <q-btn @click="goback" label="Retour" color="primary" class="q-ma-sm"/>
                 </div>
             </div>
         </q-form>
-    </div>
+    </q-tab-panel>
 </template>
 
 <script>
@@ -71,6 +70,7 @@ export default {
         const customers = useResource('customer')
         const options = ref(null);
         const auth = useAuthStore();
+        const company = useResource('company');
 
         return {
             q,
@@ -81,7 +81,8 @@ export default {
             projectStatus,
             customers,
             options,
-            auth
+            auth,
+            company
         }
     },
     data() {
@@ -106,8 +107,14 @@ export default {
                     this.customerList.push(element)
                 })
             })
-            this.project.company = this.auth.me.company;
+            this.company.get(this.auth.me.company).then((res) => {
+                this.project.companyName = res.name;
+            })
+            //this.project.company = this.auth.me.company;
             this.project.creator = this.auth.me.firstName;
+        },
+        goback() {
+          this.$router.go(-1);
         },
         onSubmit() {
             if (this.project.name && this.project.description && this.project.customer && this.project.projectStatus) {

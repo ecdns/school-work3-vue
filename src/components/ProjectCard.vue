@@ -1,5 +1,5 @@
 <template>
-    <q-card class="my-card q-ma-lg" flat bordered @click="router.push(`/projects/${project.id}`)">
+    <q-card class="my-card q-ma-lg" flat bordered @click="router.push(`/projects/${project.id}`)" style="cursor: pointer;">
         <q-card-section horizontal>
             <q-card-section class="col-5 flex flex-center">
                 <q-img style="height: 200px" class="rounded-borders" src="https://cdn.quasar.dev/img/parallax2.jpg" />

@@ -1,10 +1,8 @@
 <template>
     <q-page>
-        <div class="full-width row wrap justify-center items-center content-center">
-            <div style="margin-top: 110px;">
-                <SearchBar :data="contacts" />
-                <Contacts :contacts="contacts" />
-            </div>
+        <div style="margin-top: 110px; width: 100%;">
+            <SearchBar :data="contacts" />
+            <Contacts :contacts="contacts" />
         </div>
     </q-page>
 </template>
