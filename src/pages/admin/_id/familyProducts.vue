@@ -3,7 +3,6 @@
         <q-form @submit="onSubmit" class="q-gutter-md" ref="form" greedy>
             <q-input filled v-model="family.name" hint="Nom"></q-input>
             <q-input filled v-model="family.description" hint="Description"></q-input>
-            <!-- <q-input filled v-model="family.company" hint="Entreprise"></q-input> -->
             <q-select filled v-model="family.company" use-chips label="Choisir une entreprise" :options="companiesList"
                 style="width: 250px" option-label="name" option-value="id" lazy-rules :rules="[
                     (val) =>
@@ -55,7 +54,7 @@ export default {
         },
         onSubmit() {
             this.family.company = this.family.company.id
-            this.productFamilies.update(this.family.id).then(() => {
+            this.productFamilies.update(this.family.id, this.family).then(() => {
                 this.q.notify({
                     icon: 'done',
                     color: 'positive',
