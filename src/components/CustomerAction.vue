@@ -221,7 +221,7 @@ export default {
           dueDate: this.inputdueDate,
           project: this.route.params.id,
           users: this.auth.me.id,
-          taskType: this.inputTypeId,
+          taskTypes: this.inputTypeId,
           location: "location 1",
           taskStatus: this.inputStatusId
         }))).then((res) => {
