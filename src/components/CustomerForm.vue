@@ -16,7 +16,7 @@
         <q-input outlined v-model="job" :rules="inputRules" name="job" label="Rôle" class="  col-5" />
       </div>
       <div class="row justify-around  q-my-sm">
-        <q-select filled v-model="status" use-chips label="Statut" :options="statusList" style="width: 250px"
+        <q-select filled v-model="status" use-chips label="Statut" :options="statusList" style="width: 92%"
           option-label="name" option-value="id" class=" col-10">
         </q-select>
       </div>

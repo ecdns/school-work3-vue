@@ -6,8 +6,11 @@
           <ApexDonut />
         </div>
         <div class="q-gutter-xs q-card q-gutter-xsa q-carda">
-          <ApexBar />
+          <ApexPolarArea />
         </div>
+<!--        <div class="q-gutter-xs q-card q-gutter-xsa q-carda">
+          <ApexColumn />
+        </div>-->
       </div>
     </div>
   </div>
@@ -16,10 +19,13 @@
 <script>
 import ApexDonut from "components/charts/donut/ApexDonut.vue";
 import ApexBar from "components/charts/bar/ApexBar.vue";
+import ApexPolarArea from "components/charts/polarArea/ApexPolarArea.vue";
+import ApexColumn from "components/charts/column/ApexColumn.vue";
 
 export default {
   components: {
-    ApexBar,
+ /*   ApexColumn,*/
+    ApexPolarArea,
     ApexDonut,
   },
 };
