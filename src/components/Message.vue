@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100%;" v-if="messages.length > 0">
+    <div v-if="messages.length > 0">
         <div v-for="message in messages" :key="message.id">
             <q-chat-message v-if="message.sender.id === auth.me.id" :name="[auth.me.firstName]"
                 :avatar="[auth.me.firstName[0]]" :text="[message.message]" :stamp="[message.createdAt]" sent />
@@ -7,7 +7,6 @@
                 :text="[message.message]" :stamp="[message.createdAt]" />
         </div>
     </div>
-
 </template>
 
 <script>
