@@ -1,5 +1,5 @@
 <template>
-    <div class="q-pa-md" style="max-width: 400px">
+    <div class="q-pa-md q-mx-auto q-mt-xl" style="max-width: 400px">
         <q-form @submit="onSubmit" class="q-gutter-md" ref="form" greedy>
             <q-input filled v-model="family.name" hint="Nom"></q-input>
             <q-input filled v-model="family.description" hint="Description"></q-input>
