@@ -8,6 +8,7 @@
       <q-tabs v-model="tab" dense class="bg-grey-3 text-grey-7" active-color="primary" indicator-color="purple"
         align="justify">
         <q-tab name="details" label="Détails" />
+        <q-tab name="action" label="Action" />
         <q-tab name="bill" label="Facture" />
         <q-tab name="documents" label="Documents" />
       </q-tabs>
@@ -42,6 +43,10 @@
           </q-form>
         </q-tab-panel>
 
+        <q-tab-panel name="action">
+          <CustomerAction />
+        </q-tab-panel>
+
         <q-tab-panel name="bill">
           <div class="text-h6">Ma liste de factures</div>
           <invoice-list :invoices="items" />
@@ -55,6 +60,8 @@
             </div>
           </div>
         </q-tab-panel>
+
+
       </q-tab-panels>
     </q-card>
   </q-page>
@@ -68,11 +75,13 @@ import { useResource } from 'src/composables/resources';
 import useQuasar from 'quasar/src/composables/use-quasar';
 // import jsPDF from 'jspdf';
 import InvoiceList from 'src/components/InvoiceList.vue';
+import CustomerAction from 'src/components/CustomerAction.vue';
 import { useAuthStore } from 'src/stores/auth';
 
 export default {
   components: {
-    InvoiceList
+    InvoiceList,
+    CustomerAction
   },
   setup() {
     const projects = useResource("project");
